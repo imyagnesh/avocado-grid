@@ -1,0 +1,299 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+
+<dom-module id="avocado-grid">
+  <style>
+    :host {
+      display: block;
+    }
+
+    .dataTable {
+      font-size: 15px;
+      /* 12sp Roboto Medium, 54% black */
+      /* 64dp card header height */
+      /* 56do for last row */
+      /* column padding */
+      /* 48dp row height */
+      /* 13sp Roboto Regular, 87% black */
+      /* border separation color */
+      /* INTERACTION */
+    }
+
+    .dataTable table {
+      width: 100%;
+    }
+
+    .dataTable td, .dataTable th {
+      padding: 0;
+      margin: 0;
+    }
+
+    .dataTable th {
+      font-size: 12px;
+      font-weight: 500;
+      color: #757575;
+      cursor: pointer;
+      white-space: nowrap;
+      /* when hoverSortIcons on a non-sorted column*/
+      /* when hoverSortIcons on a sorted column*/
+    }
+
+    .dataTable th .hoverSortIcons ng-md-icon {
+      visibility: hidden;
+      fill: #b3b3b3;
+    }
+
+    .dataTable th:hover .hoverSortIcons ng-md-icon {
+      visibility: visible;
+    }
+
+    .dataTable th .sortedColumn .hoverSortIcons ng-md-icon {
+      display: none;
+    }
+
+    .dataTable th .sortedColumn ng-md-icon {
+      fill: #212121;
+    }
+
+    .dataTable th svg {
+      -webkit-transform: rotate(90deg);
+    }
+
+    .dataTable .dataTable-header, .dataTable .dataTable-header-alternate {
+      height: 64px;
+      padding-left: 24px;
+      padding-right: 14px;
+    }
+
+    .dataTable .dataTable-header md-button, .dataTable .dataTable-header-alternate md-button {
+      margin-left: 24px;
+    }
+
+    .dataTable .dataTable-header ng-md-icon, .dataTable .dataTable-header-alternate ng-md-icon {
+      fill: #757575;
+    }
+
+    .dataTable .dataTable-header-alternate {
+      background-color: #e3edfd;
+    }
+
+    .dataTable .dataTable-header-alternate .alternate-text {
+      color: #0D47A1;
+    }
+
+    .dataTable .dataTable-footer, .dataTable tr th {
+      height: 56px;
+    }
+
+    .dataTable .checkboxCell, .dataTable .menuCell {
+      width: 18px;
+      /*the next cell should not have just 24px padding */
+    }
+
+    .dataTable .checkboxCell paper-checkbox,
+    .dataTable .menuCell paper-icon-button {
+      margin: 0;
+      padding: 0;
+    }
+
+    .dataTable td.checkboxCell,
+    .dataTable th.checkboxCell,
+    .dataTable td.menuCell,
+    .dataTable th.menuCell {
+      padding-left: 24px;
+    }
+
+    .dataTable tr td {
+      height: 48px;
+      font-size: 13px;
+      color: #212121;
+    }
+
+    .dataTable td:first-child, .dataTable th:first-child {
+      padding: 0 0 0 24px;
+    }
+
+    .dataTable td:last-child, .dataTable th:last-child {
+      padding-right: 24px;
+    }
+
+    .dataTable .column {
+      padding-left: 56px;
+    }
+
+    .dataTable .leftAlignedColumn {
+      text-align: left;
+    }
+
+    .dataTable .rightAlignedColumn {
+      text-align: right;
+    }
+
+    .dataTable thead tr th {
+      border-bottom: solid 1px #DDDDDD;
+    }
+
+    .dataTable tbody tr td {
+      border-bottom: solid 1px #DDDDDD;
+    }
+
+    .dataTable tbody tr:hover td {
+      background: #EEEEEE;
+    }
+
+    .dataTable .selectedRow td {
+      background: #F5F5F5;
+    }
+
+    paper-material {
+      border-radius: 2px;
+      height: 100%;
+      padding: 16px 0px 16px 0px;
+      width: calc(98.66% - 16px);
+      margin: 16px auto;
+      background: white;
+    }
+
+
+  </style>
+  <template>
+    <paper-material elevation="1">
+      <div class="dataTable" layout="column">
+        <table cellpadding="0" cellspacing="0">
+          <thead>
+          <tr>
+            <th class="checkboxCell">
+              <paper-checkbox checked="{{selectAll}}"></paper-checkbox>
+            </th>
+            <template is="dom-repeat" items="{{grid}}">
+              <th class="column leftAlignedColumn" tabindex="0">
+                <div class="layout horizontal center">
+                  <div class="flex">{{item.label}}</div>
+                  <iron-icon icon="arrow-drop-down"></iron-icon>
+                </div>
+              </th>
+            </template>
+            <th>
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <template is="dom-repeat" items="{{cell}}">
+            <tr>
+              <td class="checkboxCell">
+                <paper-checkbox checked="{{selectAll}}"></paper-checkbox>
+              </td>
+              <td class="column leftAlignedColumn">
+                <span>{{item.firstName}}</span>
+              </td>
+              <td class="column leftAlignedColumn">
+                <span>{{item.firstName}}</span>
+              </td>
+              <td class="column leftAlignedColumn">
+                <span>{{item.firstName}}</span>
+              </td>
+              <td class="column rightAlignedColumn">
+                <span>{{item.firstName}}</span>
+              </td>
+              <td class="menuCell">
+                <paper-icon-button icon="more-vert"></paper-icon-button>
+              </td>
+            </tr>
+          </template>
+          </tbody>
+          <tfoot>
+          <tr>
+            <td colspan="6" align="right">
+              <paper-icon-button icon="add"></paper-icon-button>
+            </td>
+          </tr>
+          </tfoot>
+        </table>
+      </div>
+    </paper-material>
+  </template>
+</dom-module>
+<script>
+  (function () {
+    Polymer({
+      is: 'avocado-grid',
+
+      properties: {
+
+        grid: {
+          type: Array
+        },
+
+        cell: {
+          type: Array
+        },
+
+        selectAll: {
+          type: Boolean
+        },
+
+        selectable: {
+          type: Boolean,
+          value: true
+        }
+      },
+
+      ready: function () {
+        this.grid = [
+          {
+            label: 'First Name',
+            binding: 'firstName',
+            type: 'string',
+            control: 'text-box',
+            width: 10
+          },
+          {
+            label: 'Last Name',
+            binding: 'lastName',
+            type: 'string',
+            control: 'text-box',
+            width: 10
+          },
+          {
+            label: 'Address',
+            binding: 'address',
+            type: 'string',
+            control: 'text-box',
+            width: 10
+          },
+          {
+            label: 'Contact',
+            binding: 'contact',
+            type: 'number',
+            control: 'text-box',
+            width: 10
+          }];
+
+        this.cell = [
+          {
+            firstName: 'Yagnesh',
+            lastName: 'Modh',
+            address: 'Ahmedabad',
+            contact: '8690090417'
+          },
+          {
+            firstName: 'Yagnesh',
+            lastName: 'Modh',
+            address: 'Ahmedabad',
+            contact: '8690090417'
+          }
+        ];
+      }
+
+    });
+  })();
+</script>
