@@ -171,53 +171,52 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <table cellpadding="0" cellspacing="0">
           <thead>
           <tr>
-            <th class="checkboxCell">
-              <paper-checkbox checked="{{selectAll}}"></paper-checkbox>
-            </th>
+            <template is="dom-if" if="{{!readOnly}}">
+              <th class="checkboxCell">
+                <paper-checkbox checked="{{selectAll}}"></paper-checkbox>
+              </th>
+            </template>
             <template is="dom-repeat" items="{{grid}}">
               <th class="column leftAlignedColumn" tabindex="0">
                 <div class="layout horizontal center">
-                  <div class="flex">{{item.label}}</div>
+                  <div>{{item.label}}</div>
                   <iron-icon icon="arrow-drop-down"></iron-icon>
                 </div>
               </th>
             </template>
-            <th>
-            </th>
+            <template is="dom-if" if="{{!readOnly}}">
+              <th>
+              </th>
+            </template>
           </tr>
           </thead>
           <tbody>
-          <template is="dom-repeat" items="{{cell}}">
+          <template is="dom-repeat" items="{{cell}}" as="data">
             <tr>
-              <td class="checkboxCell">
-                <paper-checkbox checked="{{selectAll}}"></paper-checkbox>
-              </td>
-              <td class="column leftAlignedColumn">
-                <span>{{item.firstName}}</span>
-              </td>
-              <td class="column leftAlignedColumn">
-                <span>{{item.firstName}}</span>
-              </td>
-              <td class="column leftAlignedColumn">
-                <span>{{item.firstName}}</span>
-              </td>
-              <td class="column rightAlignedColumn">
-                <span>{{item.firstName}}</span>
-              </td>
-              <td class="menuCell">
-                <paper-icon-button icon="more-vert"></paper-icon-button>
-              </td>
+              <template is="dom-if" if="{{!readOnly}}">
+                <td class="checkboxCell">
+                  <paper-checkbox checked="{{selectAll}}"></paper-checkbox>
+                </td>
+              </template>
+              <template is="dom-repeat" items="{{grid}}" as="header">
+                <td class="column leftAlignedColumn" on-click="editData">
+                  <bind-json data="{{data}}" key="{{header}}" edit="{{isEdit}}"></bind-json>
+                </td>
+              </template>
+              <template is="dom-if" if="{{!readOnly}}">
+                <td class="menuCell">
+                  <paper-icon-button icon="delete"></paper-icon-button>
+                </td>
+              </template>
             </tr>
           </template>
           </tbody>
-          <tfoot>
-          <tr>
-            <td colspan="6" align="right">
-              <paper-icon-button icon="add"></paper-icon-button>
-            </td>
-          </tr>
-          </tfoot>
         </table>
+        <template is="dom-if" if="{{!readOnly}}">
+          <div class="horizontal end-justified layout">
+            <paper-icon-button icon="add"></paper-icon-button>
+          </div>
+        </template>
       </div>
     </paper-material>
   </template>
@@ -241,9 +240,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: Boolean
         },
 
-        selectable: {
+        readOnly: {
           type: Boolean,
-          value: true
+          value: false
+        },
+
+        isEdit: {
+          type: Boolean,
+          value: false
         }
       },
 
@@ -286,13 +290,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             contact: '8690090417'
           },
           {
-            firstName: 'Yagnesh',
-            lastName: 'Modh',
-            address: 'Ahmedabad',
-            contact: '8690090417'
+            firstName: 'Yagnesh1',
+            lastName: 'Modh1',
+            address: 'Ahmedabad1',
+            contact: '86900904171'
           }
         ];
+      },
+
+      editData: function(e) {
+        console.log(e);
+        var checkbox = e.srcElement.firstElementChild;
+        checkbox.edit = !checkbox.edit;
       }
+
+
 
     });
   })();

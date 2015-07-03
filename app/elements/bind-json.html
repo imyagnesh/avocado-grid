@@ -1,0 +1,43 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="bind-json">
+
+  <template>
+    <template is="dom-if" if="{{!edit}}">
+      <span>{{value}}</span>
+    </template>
+    <template is="dom-if" if="{{edit}}">
+      <paper-input value="{{value}}"></paper-input>
+    </template>
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'bind-json',
+
+      properties: {
+        data: {
+          type: Object
+        },
+
+        key: {
+          type: Object
+        },
+
+        edit:{
+          type: Boolean,
+          value: false
+        }
+      },
+
+      ready: function () {
+        console.log(this.edit);
+        this.value = this.data[this.key.binding];
+      }
+
+    });
+  </script>
+
+</dom-module>
+
