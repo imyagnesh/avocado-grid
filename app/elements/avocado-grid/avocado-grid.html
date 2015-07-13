@@ -25,7 +25,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     [header] {
     @apply(--layout-horizontal);
     @apply(--layout-center);
-
     @apply(--paper-font-subhead);
 
       height: 40px;
@@ -40,14 +39,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     @apply(--layout-fit);
 
     @apply(--paper-font-subhead);
-
       height: 40px;
       border-bottom : solid 1px #DDDDDD;
-      /*background-color: var(--google-blue-700);*/
       padding: 0 24px;
-      /*color: white;*/
       display: block;
-      /*width: 100%;*/
       position: absolute;
       line-height: 40px;
     }
@@ -57,13 +52,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     @apply(--layout-center);
     @apply(--layout-end-justified);
     @apply(--layout-fixed-bottom);
-
     @apply(--paper-font-subhead);
-
       height: 48px;
-      /*background-color: var(--google-blue-700);*/
       padding: 0 24px;
-      /*color: white;*/
     }
 
     [tool] {
@@ -83,184 +74,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       @apply(--layout-scroll);
       width: 100%;
       max-height: 200px;
-      /*overflow-y: auto;*/
       display: block;
-      /*position: absolute;*/
     }
 
     #canvas {
       position: relative;
     }
-
-
-    /*[card] {*/
-    /*@apply(--layout-vertical);*/
-    /*@apply(--layout-center-center);*/
-
-    /*@apply(--shadow-elevation-2dp);*/
-
-      /*height: 300px;*/
-      /*max-width: 800px;*/
-      /*margin: 16px auto;*/
-      /*font-weight: bold;*/
-      /*background-color: var(--paper-grey-200);*/
-    /*}*/
-
-    .dataTable {
-      font-size: 15px;
-      /* 12sp Roboto Medium, 54% black */
-      /* 64dp card header height */
-      /* 56do for last row */
-      /* column padding */
-      /* 48dp row height */
-      /* 13sp Roboto Regular, 87% black */
-      /* border separation color */
-      /* INTERACTION */
-    }
-
-    .dataTable table {
-      width: 100%;
-    }
-
-    .dataTable td {
-      padding: 0;
-      margin: 0;
-    }
-
-    .dataTable-header td {
-      font-size: 12px;
-      font-weight: 500;
-      color: #757575;
-      cursor: pointer;
-      white-space: nowrap;
-      /* when hoverSortIcons on a non-sorted column*/
-      /* when hoverSortIcons on a sorted column*/
-    }
-
-    /*.dataTable th .hoverSortIcons ng-md-icon {*/
-    /*visibility: hidden;*/
-    /*fill: #b3b3b3;*/
-    /*}*/
-
-    /*.dataTable th:hover .hoverSortIcons ng-md-icon {*/
-    /*visibility: visible;*/
-    /*}*/
-
-    /*.dataTable th .sortedColumn .hoverSortIcons ng-md-icon {*/
-    /*display: none;*/
-    /*}*/
-
-    /*.dataTable th .sortedColumn ng-md-icon {*/
-    /*fill: #212121;*/
-    /*}*/
-
-    /*.dataTable th svg {*/
-    /*-webkit-transform: rotate(90deg);*/
-    /*}*/
-
-    /*.dataTable .dataTable-header, .dataTable .dataTable-header-alternate {*/
-    /*height: 64px;*/
-    /*padding-left: 24px;*/
-    /*padding-right: 14px;*/
-    /*}*/
-
-    /*.dataTable .dataTable-header md-button, .dataTable .dataTable-header-alternate md-button {*/
-    /*margin-left: 24px;*/
-    /*}*/
-
-    /*.dataTable .dataTable-header ng-md-icon, .dataTable .dataTable-header-alternate ng-md-icon {*/
-    /*fill: #757575;*/
-    /*}*/
-
-    /*.dataTable .dataTable-header-alternate {*/
-    /*background-color: #e3edfd;*/
-    /*}*/
-
-    /*.dataTable .dataTable-header-alternate .alternate-text {*/
-    /*color: #0D47A1;*/
-    /*}*/
-
-    /*.dataTable tr th {*/
-    /*height: 56px;*/
-    /*}*/
-
-    .dataTable .checkboxCell, .dataTable .menuCell {
-      width: 18px;
-      /*the next cell should not have just 24px padding */
-    }
-
-    .dataTable .checkboxCell paper-checkbox,
-    .dataTable .menuCell paper-icon-button {
-      margin: 0;
-      padding: 0;
-    }
-
-    .dataTable td.checkboxCell,
-    .dataTable th.checkboxCell,
-    .dataTable td.menuCell,
-    .dataTable th.menuCell {
-      padding-left: 24px;
-    }
-
-    .dataTable tr td {
-      height: 48px;
-      font-size: 13px;
-      color: #212121;
-    }
-
-    .dataTable td:first-child {
-      padding: 0 0 0 24px;
-    }
-
-    .dataTable td:last-child {
-      padding-right: 24px;
-    }
-
-    .dataTable .column {
-      padding-left: 24px;
-    }
-
-    .dataTable .leftAlignedColumn {
-      text-align: left;
-    }
-
-    .dataTable .rightAlignedColumn {
-      text-align: right;
-    }
-
-    .dataTable .bottomAlignedColumn {
-      vertical-align: bottom;
-    }
-
-    /*.dataTable-header tr td {*/
-    /*border-bottom: solid 1px #DDDDDD;*/
-    /*}*/
-
-    .dataTable td {
-      border-bottom: solid 1px #DDDDDD;
-    }
-
-    .dataTable-body tr:hover td {
-      background: #EEEEEE;
-    }
-
-    .dataTable .selectedRow td {
-      background: #F5F5F5;
-    }
-
-    paper-material {
-      border-radius: 2px;
-      height: 100%;
-      padding: 16px 0px 16px 0px;
-      width: calc(98.66% - 16px);
-      margin: 16px auto;
-      background: white;
-    }
   </style>
   <template>
     <div main>
       <div header>
+        <template is="dom-if" if="{{!readOnly}}">
         <div tool><paper-checkbox checked="{{selectAll}}"></paper-checkbox></div>
+        </template>
         <template is="dom-repeat" id="gridList" items="{{grid}}" index-as="grid_no">
           <div content on-click="sortData">
             <div class="layout horizontal center">
@@ -269,25 +95,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </div>
           </div>
         </template>
+        <template is="dom-if" if="{{!readOnly}}">
         <div tool>
 
         </div>
+        </template>
       </div>
       <div id="virtual-scroll" on-scroll="scrollData">
       <div id="canvas">
       <template is="dom-repeat" id="cellList" items="{{iCell}}" as="data">
       <div body class="renderer">
+        <template is="dom-if" if="{{!readOnly}}">
         <div tool>
           <paper-checkbox checked="{{selectAll}}"></paper-checkbox>
         </div>
+        </template>
         <template is="dom-repeat" items="{{grid}}" as="header">
           <div content>
             <bind-json grid="{{data}}" binding="{{header}}" read-only="{{readOnly}}"></bind-json>
           </div>
         </template>
+        <template is="dom-if" if="{{!readOnly}}">
         <div tool>
           <paper-icon-button icon="delete" on-click="deleteItem"></paper-icon-button>
         </div>
+        </template>
       </div>
       </template>
       <template is="dom-if" if="{{insertItem}}">
