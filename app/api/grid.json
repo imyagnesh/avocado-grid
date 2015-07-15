@@ -1,28 +1,28 @@
 [
   {
     "label": "First Name",
-    "binding": "firstName",
+    "name": "firstName",
     "type": "string",
     "control": "text-box",
     "width": 10
   },
   {
     "label": "Last Name",
-    "binding": "lastName",
+    "name": "lastName",
     "type": "string",
     "control": "text-box",
     "width": 10
   },
   {
     "label": "Address",
-    "binding": "address",
+    "name": "address",
     "type": "string",
     "control": "text-box",
     "width": 10
   },
   {
     "label": "Contact",
-    "binding": "contact",
+    "name": "contact",
     "type": "string",
     "control": "text-box",
     "width": 10
