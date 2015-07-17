@@ -39,12 +39,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     @apply(--layout-fit);
 
     @apply(--paper-font-subhead);
-      height: 40px;
+      height: 50px;
       border-bottom : solid 1px #DDDDDD;
       padding: 0 24px;
       display: block;
       position: absolute;
-      line-height: 40px;
+      line-height: 50px;
     }
 
     [footer] {
@@ -61,7 +61,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     @apply(--layout-inline);
     }
 
-    [header] [content] {
+    [header] [content],[header] [tool] {
       cursor: pointer;
     }
 
@@ -82,16 +82,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
   </style>
   <template>
+    <array-selector id="selector" items="{{cell}}" selected="{{selected}}" multi toggle></array-selector>
     <div main>
       <div header>
         <template is="dom-if" if="{{!readOnly}}">
-        <div tool><paper-checkbox checked="{{selectAll}}"></paper-checkbox></div>
+        <div tool on-click="sortData">
+          <div>#</div>
+          <iron-icon icon="arrow-drop-down"></iron-icon>
+        </div>
         </template>
         <template is="dom-repeat" id="gridList" items="{{grid}}" index-as="grid_no">
-          <div content on-click="sortData">
-            <div class="layout horizontal center">
+          <div content>
+            <div class="layout horizontal center" on-click="sortData">
               <div>{{item.label}}</div>
-              <iron-icon icon="arrow-drop-down"></iron-icon>
+              <iron-icon icon="{{getSortingClass(item, sortedColumn, descending)}}"></iron-icon>
             </div>
           </div>
         </template>
@@ -101,13 +105,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </div>
         </template>
       </div>
+
+
+
       <div id="virtual-scroll" on-scroll="scrollData">
       <div id="canvas">
       <template is="dom-repeat" id="cellList" items="{{iCell}}" as="data">
       <div body class="renderer">
         <template is="dom-if" if="{{!readOnly}}">
         <div tool>
-          <paper-checkbox checked="{{selectAll}}"></paper-checkbox>
+          <paper-checkbox on-change="select" checked="{{isSelected(data)}}"></paper-checkbox>
         </div>
         </template>
         <template is="dom-repeat" items="{{grid}}" as="header">
@@ -125,7 +132,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <template is="dom-if" if="{{insertItem}}">
         <div body class="renderer">
         <div tool>
-          <paper-checkbox checked="{{selectAll}}"></paper-checkbox>
+          <paper-checkbox on-change="select"></paper-checkbox>
         </div>
         <template is="dom-repeat" items="{{grid}}" as="header">
           <div content>
@@ -183,7 +190,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         rowHeight: {
           type: Number,
-          value: 40
+          value: 50
         },
 
         cellsPerPage: {
@@ -207,9 +214,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type:Boolean,
           value: false,
           notify: true
+        },
+
+        //sortedColumn: sorted column name
+        sortedColumn: {
+          type: String,
+          value: ""
+        },
+
+        //descending: current sorting order
+        descending: {
+          type: Boolean,
+          value: false
         }
-
-
       },
 
       observers: [
@@ -265,16 +282,76 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       },
 
-
-      getIndexData: function ( startIndex, endIndex) {
-        return _.slice(this.cell, startIndex, endIndex);
+      isSelected : function (data) {
+        return  _.some(this.selected, data);
       },
 
-      sortData: function (e) {
-        var item = this.$.gridList.itemForElement(e.target);
-        this.cell = _.sortByOrder(this.cell, [item.binding], ['asc']);
+
+      getIndexData: function (startIndex, endIndex) {
+        var self = this;
+        var sortOrder = self.descending ? 'desc' : 'asc';
+        var sortedData = self.cell;
+        if(self.sortedColumn !== '') {
+          if (self.sortedColumn === 'index') {
+            if(sortOrder === 'asc') {
+              var i = self.selected.length;
+              var selectedCnt = 0;
+            }
+            else{
+              var i =  0;
+              var selectedCnt = self.cell.length;
+            }
+            sortedData = _.sortBy(self.cell, function (n) {
+              if(_.some(self.selected, n))
+              {
+                selectedCnt++;
+                 return  selectedCnt;
+              }
+              else
+              {
+                i++;
+                return i;
+              }
+            });
+          }
+          else {
+            sortedData = _.sortByOrder(self.cell, [self.sortedColumn], [sortOrder])
+          }
+        }
+        return _.slice(sortedData, startIndex, endIndex);
+      },
+
+      sortData: function(e) {
+        var column = e.model.item;
+        var sortingColumn = '';
+        if(column) {
+          sortingColumn = column.name;
+        }
+        else{
+          sortingColumn = 'index';
+        }
+        if (sortingColumn == this.sortedColumn){
+          this.set('descending', !this.descending);
+        } else {
+          this.set('sortedColumn', sortingColumn);
+        }
         this.$$('#virtual-scroll').scrollTop = 0;
+        this.changeScrollPosition(0);
       },
+
+      getSortingClass: function(column, sortingColumn, descending) {
+        var classList = [];
+        if (sortingColumn === column.name) {
+          classList.push(descending ? 'arrow-drop-down' : 'arrow-drop-up');
+        }
+        return classList.join(' ');
+      },
+//      function (e) {
+//        console.log(e);
+//        var item = this.$.gridList.itemForElement(e.target);
+//        this.cell = _.sortByOrder(this.cell, [item.name], ['asc']);
+//        this.$$('#virtual-scroll').scrollTop = 0;
+//      },
 
       deleteItem: function (e) {
         var item = this.$.cellList.itemForElement(e.target);
@@ -294,6 +371,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var ironSelector = Polymer.dom(this.root).querySelector('#canvas');
         ironSelector.setAttribute('style', 'height: ' + (this.$$('#virtual-scroll').scrollHeight - this.rowHeight) + 'px;');
         this.$$('#virtual-scroll').scrollTop = this.$$('#virtual-scroll').scrollHeight;
+      },
+
+      select: function(e){
+        var item = this.$.cellList.itemForElement(e.target);
+        this.$.selector.select(item);
       }
 
 
