@@ -8,8 +8,8 @@
       <span>{{computeVal(grid,binding)}}</span>
     </template>
     <template is="dom-if" if="{{!readOnly}}">
-      <template is="dom-if" if="{{ isTextbox(binding.control) }}">
-        <paper-input no-label-float label="{{binding.label}}" value="{{computeVal(grid,binding)}}"></paper-input>
+      <template is="dom-if" if="{{ isEqual(binding.control,'text-box') }}">
+        <awi-textbox name="{{binding.name}}" label="{{binding.label}}"  value="{{computeVal(grid,binding)}}"></awi-textbox>
       </template>
     </template>
   </template>
@@ -29,8 +29,8 @@
       return grid[binding.name];
     },
 
-    isTextbox: function (val) {
-      return val === 'text-box';
+    isEqual: function(source, target) {
+      return source === target;
     }
 
   });

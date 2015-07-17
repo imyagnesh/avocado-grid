@@ -39,12 +39,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     @apply(--layout-fit);
 
     @apply(--paper-font-subhead);
-      height: 40px;
+      height: 50px;
       border-bottom : solid 1px #DDDDDD;
       padding: 0 24px;
       display: block;
       position: absolute;
-      line-height: 40px;
+      line-height: 50px;
     }
 
     [footer] {
@@ -190,7 +190,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         rowHeight: {
           type: Number,
-          value: 40
+          value: 50
         },
 
         cellsPerPage: {
@@ -293,8 +293,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var sortedData = self.cell;
         if(self.sortedColumn !== '') {
           if (self.sortedColumn === 'index') {
-            var i = self.selected.length;
-            var selectedCnt = 0;
+            if(sortOrder === 'asc') {
+              var i = self.selected.length;
+              var selectedCnt = 0;
+            }
+            else{
+              var i =  0;
+              var selectedCnt = self.cell.length;
+            }
             sortedData = _.sortBy(self.cell, function (n) {
               if(_.some(self.selected, n))
               {
