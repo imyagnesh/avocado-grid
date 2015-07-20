@@ -6,6 +6,10 @@
     <file url="file://$PROJECT_DIR$/app/elements/avocado-grid/avocado-grid.css" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/elements/avocado-grid/avocado-grid.html" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/elements/avocado-grid/avocado-grid.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/elements/awi-date-picker-diolog/awi-date-picker-diolog.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/elements/awi-date-picker-diolog/awi-date-picker.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/elements/awi-date-picker-diolog/awi-year-picker.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/elements/awi-radiolist/awi-radiolist.html" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/elements/awi-textbox/awi-textbox.html" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/elements/bind-json.html" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/elements/elements.html" charset="UTF-8" />

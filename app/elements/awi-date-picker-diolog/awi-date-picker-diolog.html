@@ -1,0 +1,180 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+
+<dom-module id="awi-date-picker-diolog">
+  <style>
+    :host {
+      display: block;
+    }
+  </style>
+  <template>
+    <paper-dialog id="dialog" class="date-picker-dialog" backdrop on-core-overlay-open-completed="{{dialogOpened}}">
+      <div id="container">
+        <div class="header" layout vertical flex>
+          <div class="dayOfWeekContainer selected">{{ dayOfWeek }}</div>
+          <div class="monthContainer selected" on-tap="{{ showDatePicker }}" id="month" flex><span>{{ monthShortName }}</span></div>
+          <div class="dayOfMonthContainer selected" on-tap="{{ showDatePicker }}" id="day" flex><span>{{ dayOfMonth }}</span></div>
+          <div class="yearContainer" id="year" on-tap="{{ showYearPicker }}" flex><span>{{ formattedYear }}</span></div>
+        </div>
+        <core-animated-pages transitions="cross-fade" class="datePickerContainer" selected="{{page}}">
+          <section>
+            <paper-date-picker id="datePicker" min="{{min}}" max="{{max}}" date="{{ immediateDate }}" infiniteScrolling="{{infiniteScrolling}}" locale="{{locale}}" startDayOfWeek="{{startDayOfWeek}}" cross-fade></paper-date-picker>
+          </section>
+          <section>
+            <paper-year-picker id="yearPicker" min="{{min}}" max="{{max}}" year="{{ year }}" locale="{{locale}}" cross-fade></paper-year-picker>
+          </section>
+        </core-animated-pages>
+      </div>
+    <div class="buttons">
+      <paper-button >More Info...</paper-button>
+      <paper-button dialog-dismiss>Cancel</paper-button>
+      <paper-button dialog-confirm autofocus on-tap={{setDate}}>OK</paper-button>
+    </div>
+  </paper-dialog>
+  </template>
+</dom-module>
+<script>
+(function() {
+
+  var dayOfWeekNames = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday'
+  ];
+
+  var monthNames = [
+    'JAN',
+    'FEB',
+    'MAR',
+    'APR',
+    'MAY',
+    'JUN',
+    'JUL',
+    'AUG',
+    'SEP',
+    'OCT',
+    'NOV',
+    'DEC'
+  ];
+
+  Polymer({
+    is: 'awi-date-picker-diolog',
+
+    properties: {
+      foo: {
+        type: String,
+        value: 'bar',
+        notify: true
+      }
+    },
+
+    localeChanged: function(){
+    this.intl = {};
+    this.intl.dayOfWeek = Intl.DateTimeFormat(this.locale, {weekday: 'long'}).format
+    this.intl.day = Intl.DateTimeFormat(this.locale, {day: 'numeric'}).format;
+    this.intl.shortMonth = Intl.DateTimeFormat(this.locale, {month: 'short'}).format;
+    this.intl.year = Intl.DateTimeFormat(this.locale, {year: 'numeric'}).format;
+  },
+
+  immediateDateChanged: function() {
+    this.dayOfWeek = this.intl.dayOfWeek(this.immediateDate);
+    this.dayOfMonth = this.intl.day(this.immediateDate);
+    this.monthShortName = this.intl.shortMonth(this.immediateDate);
+    this.formattedYear = this.intl.year(this.immediateDate);
+
+    this.year = this.immediateDate.getFullYear();
+    this.fire('selection-changed');
+  },
+
+  open: function() {
+    this.$.dialog.open();
+  },
+  dialogOpened: function(){
+    this.$.datePicker.refreshScrollPosition();
+    this.$.yearPicker.refreshScrollPosition();
+  },
+
+  yearChanged: function() {
+    var newDate = this.immediateDate.setYear(this.year);
+    if(newDate < this.min){
+      this.immediateDate = new Date(this.min);
+    }else if(newDate > this.max){
+      this.immediateDate = new Date(this.max);
+    }else{
+      this.immediateDate = new Date(newDate);
+    }
+    this.page = 0;
+  },
+
+  showYearPicker: function() {
+    this.page = 1;
+  },
+
+  showDatePicker: function() {
+    this.page = 0;
+  },
+
+  setDate: function(){
+    if(this.immediateDate <= this.max && this.immediateDate >= this.min){
+      this.value = this.immediateDate;
+      this.fire('value-changed');
+    }
+  },
+
+  pageChanged: function() {
+    if (this.page == 0) {
+      this.$.day.classList.add("selected");
+      this.$.month.classList.add("selected");
+      this.$.year.classList.remove("selected");
+    } else {
+      this.$.day.classList.remove("selected");
+      this.$.month.classList.remove("selected");
+      this.$.year.classList.add("selected");
+    }
+    this.$.datePicker.refreshScrollPosition();
+    this.$.yearPicker.refreshScrollPosition();
+  },
+
+  minChanged: function(){
+    if(typeof this.min == "string"){
+      this.min = new Date(this.min);
+    }
+  },
+
+  maxChanged: function(){
+    if(typeof this.max == "string"){
+      this.max = new Date(this.max);
+    }
+  },
+
+  valueChanged: function(){
+    if(typeof this.value == "string"){
+      this.value = new Date(this.value);
+    }
+  },
+
+  ready:function() {
+    if(this.value){
+      this.valueChanged();
+
+      this.immediateDate = this.value;
+    }
+    this.localeChanged();
+    this.immediateDateChanged();
+  }
+  });
+})();
+</script>

@@ -59,11 +59,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <body unresolved class="fullbleed layout vertical">
   <span id="browser-sync-binding"></span>
   <template is="dom-bind" id="app">
-    <iron-ajax auto url="../api/cell.json"
-               handle-as="json" last-response="{{cellResponse}}"></iron-ajax>
-    <iron-ajax auto url="../api/grid.json"
-               handle-as="json" last-response="{{gridResponse}}"></iron-ajax>
-    <avocado-grid grid="{{gridResponse}}" cell="{{cellResponse}}"></avocado-grid>
+    <!--<iron-ajax auto url="../api/cell.json"-->
+               <!--handle-as="json" last-response="{{cellResponse}}"></iron-ajax>-->
+    <!--<iron-ajax auto url="../api/grid.json"-->
+               <!--handle-as="json" last-response="{{gridResponse}}"></iron-ajax>-->
+    <!--<avocado-grid grid="{{gridResponse}}" cell="{{cellResponse}}"></avocado-grid>-->
+    <awi-date-picker></awi-date-picker>
   </template>
   <!-- build:js scripts/app.js -->
   <script src="scripts/app.js"></script>
