@@ -1,0 +1,92 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="money-validator.html">
+
+<dom-module id="money-input">
+
+  <style>
+
+    :host {
+      display: inline-block;
+    }
+
+    input[is="iron-input"] {
+      font: inherit;
+      outline: none;
+      box-shadow: none;
+      border: none;
+      width: auto;
+      text-align: right;
+    }
+
+  </style>
+
+  <template>
+    <money-validator></money-validator>
+    <template is="dom-if" if="{{!focused}}">
+      <input is="iron-input" bind-value="[[currency]]" tabindex="-1" readonly>
+      &nbsp;
+    </template>
+    <input is="iron-input" bind-value="{{amount}}">
+  </template>
+
+</dom-module>
+
+<script>
+  (function() {
+
+    Polymer({
+
+      is: 'money-input',
+
+      behaviors: [
+        Polymer.IronValidatableBehavior
+      ],
+
+      properties: {
+
+        value: {
+          notify: true,
+          type: String
+        },
+
+        currency: {
+          type: String
+        },
+
+        amount: {
+          type: Number
+        },
+
+        validator: {
+          type: String,
+          value: 'money-validator'
+        },
+
+        focused:{
+          type: Boolean,
+          value: false,
+          notify: true
+        }
+
+      },
+
+      observers: [
+        '_computeValue(amount)'
+      ],
+
+      _computeValue: function(amount) {
+        this.value = amount;
+      }
+
+    })
+  })();
+</script>

@@ -9,6 +9,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="number-input.html">
 
 <dom-module id="awi-numbereditor">
   <style>
@@ -17,7 +18,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
   </style>
   <template>
-    <div>Hello from <span>{{foo}}</span></div>
+
+    <paper-input-container always-float-label auto-validate attr-for-value="value">
+      <label>{{label}}</label>
+      <number-input class="paper-input-input"
+                   name="{{name}}"
+                    default-value="{{defaultValue}}"
+                   maxlength="[[maxLength]]"
+                   minlength="[[maxLength]]"
+                   required="[[required]]"
+                   min$="{{minValue}}"
+                   max$="{{maxValue}}"></number-input>
+      <paper-input-error>Invalid input!</paper-input-error>
+    </paper-input-container>
   </template>
 </dom-module>
 <script>
@@ -26,11 +39,53 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     is: 'awi-numbereditor',
 
     properties: {
-      foo: {
-        type: String,
-        value: 'bar',
-        notify: true
+      name: {
+        type: String
+      },
+
+      label:{
+        type: String
+      },
+
+      tooltip:{
+        type: String
+      },
+
+      required:{
+        type: Boolean,
+        value: false
+      },
+
+      minValue:{
+        type: Number,
+        value: 0
+      },
+
+      maxValue:{
+        type:Number,
+        value: 2147483647
+      },
+
+      minLength:{
+        type: Number
+      },
+
+      maxLength:{
+        type: Number
+      },
+
+      height:{
+        type: Number
+      },
+
+      width:{
+        type: Number
+      },
+
+      defaultValue:{
+        type: String
       }
+
     }
   });
 })();

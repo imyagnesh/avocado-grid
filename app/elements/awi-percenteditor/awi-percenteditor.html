@@ -1,0 +1,78 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="percent-input.html">
+
+<dom-module id="awi-percenteditor">
+  <style>
+    :host {
+      display: block;
+    }
+  </style>
+  <template>
+    <paper-input-container always-float-label auto-validate attr-for-value="value">
+      <label>{{label}}</label>
+      <percent-input class="paper-input-input" percentage="{{value}}" focused="{{isFocused}}"></percent-input>
+      <paper-input-error>Amount invalid!</paper-input-error>
+    </paper-input-container>
+  </template>
+</dom-module>
+<script>
+  (function() {
+    Polymer({
+      is: 'awi-percenteditor',
+
+      properties: {
+        label: {
+          type: String
+        },
+
+        value :{
+          type: String
+        },
+
+        isFocused:{
+          type: Boolean,
+          value: false,
+          notify: true
+        },
+
+        _boundOnFocus: {
+          type: Function,
+          value: function() {
+            return this._onFocus.bind(this);
+          }
+        },
+
+        _boundOnBlur: {
+          type: Function,
+          value: function() {
+            return this._onBlur.bind(this);
+          }
+        }
+
+      },
+
+      ready: function() {
+        this.addEventListener('focus', this._boundOnFocus, true);
+        this.addEventListener('blur', this._boundOnBlur, true);
+      },
+
+      _onFocus: function() {
+        this.isFocused = true;
+      },
+
+      _onBlur: function() {
+        this.isFocused = false;
+      }
+    });
+  })();
+</script>

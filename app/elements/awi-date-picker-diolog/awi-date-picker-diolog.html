@@ -17,22 +17,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
   </style>
   <template>
-    <paper-dialog id="dialog" class="date-picker-dialog" backdrop on-core-overlay-open-completed="{{dialogOpened}}">
+    <paper-dialog id="dialog" class="date-picker-dialog" with-backdrop entry-animation="scale-up-animation" exit-animation="fade-out-animation" with-backdrop on-core-overlay-open-completed="{{dialogOpened}}">
       <div id="container">
-        <div class="header" layout vertical flex>
+        <div class="header layout vertical flex">
           <div class="dayOfWeekContainer selected">{{ dayOfWeek }}</div>
-          <div class="monthContainer selected" on-tap="{{ showDatePicker }}" id="month" flex><span>{{ monthShortName }}</span></div>
-          <div class="dayOfMonthContainer selected" on-tap="{{ showDatePicker }}" id="day" flex><span>{{ dayOfMonth }}</span></div>
-          <div class="yearContainer" id="year" on-tap="{{ showYearPicker }}" flex><span>{{ formattedYear }}</span></div>
+          <div class="monthContainer selected flex" on-tap="showDatePicker" id="month"><span>{{ monthShortName }}</span></div>
+          <div class="dayOfMonthContainer selected flex" on-tap="showDatePicker" id="day"><span>{{ dayOfMonth }}</span></div>
+          <div class="yearContainer flex" id="year" on-tap="showYearPicker"><span>{{ formattedYear }}</span></div>
         </div>
-        <core-animated-pages transitions="cross-fade" class="datePickerContainer" selected="{{page}}">
+        <neon-animated-pages entry-animation="slide-from-right-animation" exit-animation="slide-left-animation" class="datePickerContainer" selected="{{page}}">
           <section>
-            <paper-date-picker id="datePicker" min="{{min}}" max="{{max}}" date="{{ immediateDate }}" infiniteScrolling="{{infiniteScrolling}}" locale="{{locale}}" startDayOfWeek="{{startDayOfWeek}}" cross-fade></paper-date-picker>
+            <awi-date-picker id="datePicker" min$="{{min}}" max$="{{max}}" date$="{{ immediateDate }}" infiniteScrolling$="{{infiniteScrolling}}" locale$="{{locale}}" startDayOfWeek$="{{startDayOfWeek}}" cross-fade></awi-date-picker>
           </section>
           <section>
-            <paper-year-picker id="yearPicker" min="{{min}}" max="{{max}}" year="{{ year }}" locale="{{locale}}" cross-fade></paper-year-picker>
+            <awi-year-picker id="yearPicker" min$="{{min}}" max$="{{max}}" year$="{{ year }}" locale$="{{locale}}" cross-fade></awi-year-picker>
           </section>
-        </core-animated-pages>
+        </neon-animated-pages>
       </div>
     <div class="buttons">
       <paper-button >More Info...</paper-button>
@@ -74,14 +74,75 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     is: 'awi-date-picker-diolog',
 
     properties: {
-      foo: {
-        type: String,
-        value: 'bar',
+      value: {
+        type: String
+     },
+
+      immediateDate:{
+        type: Date,
+        value:  new Date(),
         notify: true
+      },
+
+      min: {
+        type: Date,
+        value: new Date(1900,0,1)
+      },
+
+      max: {
+        type: Date,
+        value: new Date(2100,11,31)
+      },
+
+      infiniteScrolling:{
+        type: Boolean,
+        value: true
+      },
+
+      locale:{
+        type: Array
+      },
+
+      startDayOfWeek:{
+        type: Number,
+        value: 1
+      },
+
+      dayOfWeek: {
+        type: String,
+        value:''
+      },
+      dayOfMonth: {
+        type: Number,
+        value: 0,
+        notify: true
+      },
+      monthShortName: {
+        type: String,
+        value: '',
+        notify: true
+      },
+      formattedYear: {
+        type: String,
+        value:'',
+        notify: true
+      },
+      year:{
+        type: Number,
+        value:  0,
+        notify: true
+      },
+      page: {
+        type: Number,
+        value:  0
+      },
+      intl: {
+        type: Object,
+        value: {}
       }
     },
 
-    localeChanged: function(){
+  localeChanged: function(){
     this.intl = {};
     this.intl.dayOfWeek = Intl.DateTimeFormat(this.locale, {weekday: 'long'}).format
     this.intl.day = Intl.DateTimeFormat(this.locale, {day: 'numeric'}).format;
@@ -102,6 +163,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   open: function() {
     this.$.dialog.open();
   },
+
   dialogOpened: function(){
     this.$.datePicker.refreshScrollPosition();
     this.$.yearPicker.refreshScrollPosition();
@@ -174,6 +236,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
     this.localeChanged();
     this.immediateDateChanged();
+    console.log('hi');
+    this.$.dialog.open();
   }
   });
 })();

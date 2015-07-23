@@ -9,29 +9,33 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/iron-validator-behavior/iron-validator-behavior.html">
 
-<dom-module id="awi-checkbox">
-  <style>
-    :host {
-      display: block;
-    }
-  </style>
-  <template>
-    <paper-checkbox>{{label}}</paper-checkbox>
-  </template>
-</dom-module>
 <script>
-(function() {
+
   Polymer({
-    is: 'awi-checkbox',
+
+    is: 'number-validator',
 
     properties: {
-      foo: {
-        type: String,
-        value: 'bar',
-        notify: true
+      min:{
+        type: Number
+      },
+
+      max:{
+        type: Number
       }
+    },
+
+    behaviors: [
+      Polymer.IronValidatorBehavior
+    ],
+
+    validate: function(value) {
+      // this regex validates incomplete ssn's (by design)
+      return !value || ((this.min <= value) && (this.max >= value)); //value.match(/[0-9]*/);
     }
+
   });
-})();
+
 </script>

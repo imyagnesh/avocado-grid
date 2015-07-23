@@ -8,8 +8,29 @@
       <span>{{computeVal(grid,binding)}}</span>
     </template>
     <template is="dom-if" if="{{!readOnly}}">
-      <template is="dom-if" if="{{ isEqual(binding.control,'text-box') }}">
+      <template is="dom-if" if="{{ isEqual(binding.control,'awi-textbox') }}">
         <awi-textbox name="{{binding.name}}" label="{{binding.label}}"  value="{{computeVal(grid,binding)}}"></awi-textbox>
+      </template>
+      <template is="dom-if" if="{{ isEqual(binding.control,'awi-numbereditor') }}">
+        <awi-numbereditor name="{{binding.name}}" label="{{binding.label}}"  default-value="{{computeVal(grid,binding)}}"></awi-numbereditor>
+        <!--<awi-textbox name="{{binding.name}}" label="{{binding.label}}"  value="{{computeVal(grid,binding)}}"></awi-textbox>-->
+      </template>
+      <template is="dom-if" if="{{ isEqual(binding.control,'awi-moneyeditor') }}">
+        <awi-moneyeditor label="money"></awi-moneyeditor>
+        <!--<awi-moneyeditor label="{{binding.label}}"  default-value="{{computeVal(grid,binding)}}"></awi-moneyeditor>-->
+        <!--<awi-textbox name="{{binding.name}}" label="{{binding.label}}"  value="{{computeVal(grid,binding)}}"></awi-textbox>-->
+      </template>
+      <template is="dom-if" if="{{ isEqual(binding.control,'awi-percenteditor') }}">
+        <!--<awi-percenteditor name="{{binding.name}}" label="{{binding.label}}"  value="{{computeVal(grid,binding)}}"></awi-percenteditor>-->
+        <!--<awi-textbox name="{{binding.name}}" label="{{binding.label}}"  value="{{computeVal(grid,binding)}}"></awi-textbox>-->
+      </template>
+      <template is="dom-if" if="{{ isEqual(binding.control,'awi-checkbox') }}">
+        <!--<awi-checkbox></awi-checkbox>-->
+        <!--<awi-textbox name="{{binding.name}}" label="{{binding.label}}"  value="{{computeVal(grid,binding)}}"></awi-textbox>-->
+      </template>
+      <template is="dom-if" if="{{ isEqual(binding.control,'awi-radiolist') }}">
+        <!--<awi-radiolist></awi-radiolist>-->
+        <!--<awi-textbox name="{{binding.name}}" label="{{binding.label}}"  value="{{computeVal(grid,binding)}}"></awi-textbox>-->
       </template>
     </template>
   </template>
@@ -30,6 +51,9 @@
     },
 
     isEqual: function(source, target) {
+      console.log(source);
+      console.log(target);
+      console.log(source === target);
       return source === target;
     }
 

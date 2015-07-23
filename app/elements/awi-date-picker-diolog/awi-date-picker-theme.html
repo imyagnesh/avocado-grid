@@ -1,0 +1,85 @@
+<style is="awi-date-picker-theme">
+  html /deep/ .date-picker-dialog::shadow #scroller {
+    padding:0px;
+  }
+  html /deep/ .date-picker-dialog .header {
+    text-align: center;
+    color: rgba(255,255,255,.5);
+    background-color: #009688;
+  }
+
+  html /deep/ .date-picker-dialog .header .dayOfWeekContainer {
+    padding: 5px;
+    background-color: #00695C;
+  }
+
+  html /deep/ .date-picker-dialog .header .dayOfMonthContainer {
+    cursor: pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  html /deep/ .date-picker-dialog .header .monthContainer {
+    cursor: pointer;
+    font-size: 24px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:24px;
+    font-weight: 300;
+  }
+
+  html /deep/ .date-picker-dialog .header .yearContainer {
+    cursor: pointer;
+    font-size: 24px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:24px;
+    font-weight: 400;
+  }
+
+  html /deep/ .date-picker-dialog .datePickerContainer {
+    height: 255px;
+    width: 280px;
+  }
+  html /deep/ .date-picker-dialog #datePicker {
+    width: 280px;
+  }
+
+  html /deep/ .date-picker-dialog .selected {
+    color: #FFFFFF;
+  }
+
+  @media only screen and (orientation : portrait) {
+    html /deep/ .date-picker-dialog .header .yearContainer{
+      padding-bottom:10px;
+    }
+    html /deep/ .date-picker-dialog .header .monthContainer{
+      padding-top:10px;
+    }
+    html /deep/ .date-picker-dialog .header .dayOfMonthContainer {
+      font-size: 60px;
+      min-height: 60px;
+    }
+  }
+  @media only screen and (orientation : landscape) {
+    html /deep/ .date-picker-dialog {
+      width:570px;
+    }
+
+    /* the second selector is for the polyfill version */
+    html /deep/ .date-picker-dialog >  #container , html /deep/ .date-picker-dialog #scroller >  #container {
+      display:flex;
+      flex-direction: row;
+      overflow:hidden;
+    }
+
+    html /deep/ .date-picker-dialog .header .dayOfMonthContainer {
+      font-size: 89px;
+      min-height: 89px;
+    }
+  }
+
+</style>

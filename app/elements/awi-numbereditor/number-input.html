@@ -1,0 +1,120 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="number-validator.html">
+
+<dom-module id="number-input">
+
+  <style>
+
+    :host {
+      display: inline-block;
+    }
+
+    input[is="iron-input"] {
+      font: inherit;
+      outline: none;
+      box-shadow: none;
+      border: none;
+      width: auto;
+      text-align: right;
+    }
+
+  </style>
+
+  <template>
+    <number-validator min="{{minValue}}" max="{{maxValue}}"></number-validator>
+
+    <input is="iron-input" id="input"
+           bind-value="{{defaultValue}}"
+           maxlength$="[[minLength]]"
+           required$="[[required]]"
+           minlength$="[[minLength]]"
+           name$="[[name]]"
+           size$="[[size]]">
+  </template>
+
+</dom-module>
+
+<script>
+  (function() {
+
+    Polymer({
+
+      is: 'number-input',
+
+      behaviors: [
+        Polymer.IronValidatableBehavior
+      ],
+
+      properties: {
+
+        value: {
+          notify: true,
+          type: String
+        },
+
+        name: {
+          type: String
+        },
+
+        required:{
+          type: Boolean,
+          value: false
+        },
+
+        minValue:{
+          type: Number,
+          value: 0
+        },
+
+        maxValue:{
+          type:Number,
+          value: 2147483647
+        },
+
+        minLength:{
+          type: Number
+        },
+
+        maxLength:{
+          type: Number
+        },
+
+        height:{
+          type: Number
+        },
+
+        width:{
+          type: Number
+        },
+
+        defaultValue:{
+          type: String
+        },
+
+        validator: {
+          type: String,
+          value: 'number-validator'
+        }
+
+      },
+
+      observers: [
+        '_computeValue(defaultValue)'
+      ],
+
+      _computeValue: function(defaultValue) {
+        this.value = defaultValue;
+      }
+
+    })
+  })();
+</script>

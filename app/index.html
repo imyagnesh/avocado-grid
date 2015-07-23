@@ -59,12 +59,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <body unresolved class="fullbleed layout vertical">
   <span id="browser-sync-binding"></span>
   <template is="dom-bind" id="app">
-    <!--<iron-ajax auto url="../api/cell.json"-->
-               <!--handle-as="json" last-response="{{cellResponse}}"></iron-ajax>-->
-    <!--<iron-ajax auto url="../api/grid.json"-->
-               <!--handle-as="json" last-response="{{gridResponse}}"></iron-ajax>-->
-    <!--<avocado-grid grid="{{gridResponse}}" cell="{{cellResponse}}"></avocado-grid>-->
-    <awi-date-picker></awi-date-picker>
+    <iron-ajax auto url="../api/cell.json"
+               handle-as="json" last-response="{{cellResponse}}"></iron-ajax>
+    <iron-ajax auto url="../api/grid.json"
+               handle-as="json" last-response="{{gridResponse}}"></iron-ajax>
+    <avocado-grid grid="{{gridResponse}}" cell="{{cellResponse}}"></avocado-grid>
+    <div style="margin-left:20px;">
+      <awi-date-picker-diolog></awi-date-picker-diolog>
+      <paper-button raised on-click="clickHandler">Open date picker dialog</paper-button>
+    </div>
+
+    <awi-moneyeditor label="money" currency="$"></awi-moneyeditor>
+    <awi-percenteditor label="percentage"></awi-percenteditor>
+    <awi-radiolist></awi-radiolist>
+    <awi-checkbox></awi-checkbox>
+    <awi-numbereditor name="xyz" label="abc" default-value="123"></awi-numbereditor>
+    <awi-year-picker id="yearPicker" min="2010" max="2021" year="2015" cross-fade></awi-year-picker>
   </template>
   <!-- build:js scripts/app.js -->
   <script src="scripts/app.js"></script>

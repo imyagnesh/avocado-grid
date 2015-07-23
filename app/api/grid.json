@@ -1,29 +1,52 @@
-[
+[{
+  "label": "Account Name",
+  "name" : "accName",
+  "type" : "string",
+  "required": true,
+  "min-length": 0,
+  "max-lenght" : 100,
+  "default-value" : "yagnesh",
+  "control" : "awi-textbox"
+},
   {
-    "label": "First Name",
-    "name": "firstName",
-    "type": "string",
-    "control": "text-box",
-    "width": 10
+    "label": "Account Number",
+    "name" : "accNumber",
+    "type" : "number",
+    "required": true,
+    "min-length": 0,
+    "max-lenght" : 100,
+    "default-value" : "12345",
+    "control" : "awi-numbereditor",
+    "min-value" : "0",
+    "max-value" : "12345567789"
   },
   {
-    "label": "Last Name",
-    "name": "lastName",
-    "type": "string",
-    "control": "text-box",
-    "width": 10
+    "label": "AccountBalance",
+    "name" : "accBalance",
+    "type" : "money",
+    "required": true,
+    "min-length": 0,
+    "max-lenght" : 100,
+    "default-value" : "12345.00",
+    "control" : "awi-moneyeditor",
+    "min-value" : "0",
+    "max-value" : "12345567789"
   },
   {
-    "label": "Address",
-    "name": "address",
-    "type": "string",
-    "control": "text-box",
-    "width": 10
+    "label": "Interest",
+    "name" : "interest",
+    "type" : "number",
+    "required": true,
+    "min-length": 0,
+    "max-lenght" : 5,
+    "default-value" : "15.00",
+    "control" : "awi-percenteditor"
   },
   {
-    "label": "Contact",
-    "name": "contact",
-    "type": "string",
-    "control": "text-box",
-    "width": 10
-  }]
+    "label": "Is Active",
+    "name" : "active",
+    "type" : "boolean",
+    "default-value" : true,
+    "control" : "awi-checkbox"
+  }
+]

@@ -13,13 +13,102 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <dom-module id="awi-date-picker">
   <style>
     :host {
+      display: inline-block;
+      position: relative;
+      height: 250px;
+      width: 300px;
+    }
+
+    #container{
+      height: 100%;
+      width: 100%;
+      overflow-x: hidden;
+      overflow-y: auto;
+      padding: 0px 9px;
+      box-sizing: border-box;
+    }
+
+    #container::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    #container::-webkit-scrollbar-track {
+      -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.1);
+      -webkit-border-radius: 10px;
+      border-radius: 10px;
+    }
+
+    #container::-webkit-scrollbar-thumb {
+      -webkit-border-radius: 10px;
+      border-radius: 10px;
+      background: rgba(0,0,0,0.1);
+    }
+
+    #container::-webkit-scrollbar-thumb:window-inactive {
+      background: rgba(255,0,0,0.2);
+    }
+
+    .days{
+      display: flex;
+      flex-wrap: wrap;
+      width: 100%;
+      align-content: stretch;
+      min-height: 210px;
+    }
+
+    .day{
+      width: calc(14% - 6px);
+      text-align: center;
+      margin: 3px;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .day[data-date]{
+      cursor: pointer;
+    }
+
+    .day span{
       display: block;
+      width: 30px;
+      height: 30px;
+      line-height: 30px;
+    }
+
+    .day.selected span{
+      background-color: #009688;
+      color: white;
+      border-radius: 100%;
+    }
+
+    .day.title{
+      padding-top: 0px;
+      padding-bottom: 4px;
+      font-weight: bold;
+      color: rgba(0,0,0,.6);
+      cursor: default;
+    }
+
+    .day[enabled='false']{
+      pointer-events: none;
+      color: rgba(0,0,0,.3);
+    }
+
+    h1{
+      text-align: center;
+      font-size: 13px;
+      color: rgba(0,0,0,.8);
+      margin: 0px;
+      padding: 0.67em 0px;
     }
   </style>
   <template>
-    <div on-tap="pickDate" id="container" on-scroll="scrollFinished">
-      <template is="dom-repeat" items="{{months}}" as="month">
-        <div class="month" data-month="{{month.number}}" data-year="{{month.year}}">
+    <div id="container" on-click="pickDate" on-scroll="scrollFinished">
+      <!-- on-scroll="scrollFinished-->
+      <template is="dom-repeat" items="{{months}}" as="month" index-as="report_no">
+        <div class="month" data-month$="{{month.number}}" data-year$="{{month.year}}">
           <h1>{{month.name}}</h1>
           <div class="days">
             <template is="dom-repeat" items="{{weekDayNames}}" as="name">
@@ -32,7 +121,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <div class="day"></div>
               </template>
               <template is="dom-if" if="{{day}}">
-                <div class="day {{ { selected : day.n == currentDay && month.number == currentMonth && month.year == currentYear } | tokenList }}" enabled="{{day.enabled}}" data-date="{{day.n}}" data-month="{{month.number}}" data-year="{{month.year}}">
+                <div class$="{{computeClass(day,month,currentDay,currentMonth,currentYear )}}" enabled$="{{day.enabled}}" data-date$="{{day.n}}" data-month$="{{month.number}}" data-year$="{{month.year}}">
                   <span>{{day.day}}</span>
                 </div>
               </template>
@@ -61,7 +150,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         date:{
           type: Date,
-          value: new Date()
+          value: new Date(),
+          observer: 'dateChanged'
         },
 
         min:{
@@ -90,15 +180,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         currentYear :{
           type: Number,
-          value: 0
+          value: 0,
+          notify: true
         },
         currentMonth :{
           type: Number,
-          value: 0
+          value: 0,
+          notify: true
         },
         currentDay :{
           type: Number,
-          value: 0
+          value: 0,
+          notify: true
         },
         loadedRange:{
           type: Number,
@@ -116,13 +209,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         weekDayNames: {
           type: Object,
-          value: {},
+          value: [],
           notify: true
         },
 
         months:  {
           type: Object,
-          value: null,
+          value: [],
           notify: true
         },
 
@@ -135,6 +228,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: Object,
           value: {}
         }
+      },
+
+      ready: function(){
+
+        this.weekDayNames = [];
+        for(var i=this.startDayOfWeek-1;i<this.startDayOfWeek+6;i++){
+          var date = new Date(2000, 1, i, 0, 0, 0);
+          this.weekDayNames.push(new Intl.DateTimeFormat(this.locale, {weekday:'narrow'}).format(date));
+        }
+
+
+        //Infininte scrolling doesn't work (nicely) on mobile devices, so
+        // it is disabled by default.
+        if(this.infiniteScrolling){
+          if(typeof window.orientation !== 'undefined'){
+            this.infiniteScrolling = false;
+          }else{
+            this.infiniteScrolling = true;
+          }
+        }
+        this.localeChanged();
+        this.surroundDate(this.date);
+        this.dateChanged();
+
       },
 
       renderMonths: function(start,end){
@@ -174,7 +291,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             });
           }
 
-          this.months.push(month);
+          this.push('months', month);
 
           curMonth++;
           if(curMonth == 13){
@@ -184,6 +301,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         }
 
+      },
+
+      computeClass: function (day,month,currentDay,currentMonth,currentYear) {
+        var classList = [];
+        classList.push('day');
+//        {{ { selected : day.n == currentDay && month.number == currentMonth && month.year == currentYear } | tokenList }}
+        if (day.n == currentDay && month.number == currentMonth && month.year == currentYear) {
+          classList.push('selected');
+        }
+
+        return classList.join(' ');
       },
 
       localeChanged: function(){
@@ -196,9 +324,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var month = data.month;
         var year = data.year;
         if(day && month && year){
-          console.log("set date?");
+//          console.log("set date?");
           this.date = new Date(year, month-1, day);
-          this.fire("selection-changed");
+//          this.fire("selection-changed");
         }
       },
       refreshScrollPosition: function(){
@@ -249,7 +377,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       scrollFinished: function(){
 
         if(this.infiniteScrolling){
-          var monthElements = this.shadowRoot.querySelectorAll(".month");
+          var monthElements = Polymer.dom(this.root).querySelectorAll(".month");
 
           for(var i=monthElements.length-1;i>=0;i--){
             if(this.$.container.scrollTop+this.$.container.clientHeight/2 > monthElements[i].offsetTop){
@@ -285,32 +413,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
 
         this.renderMonths(prevDate,nextDate);
-      },
-
-      ready: function(){
-
-        this.weekDayNames = [];
-        for(var i=this.startDayOfWeek-1;i<this.startDayOfWeek+6;i++){
-          var date = new Date(2000, 1, i, 0, 0, 0);
-          this.weekDayNames.push(new Intl.DateTimeFormat(this.locale, {weekday:'narrow'}).format(date));
-        }
-
-
-        //Infininte scrolling doesn't work (nicely) on mobile devices, so
-        // it is disabled by default.
-        if(this.infiniteScrolling){
-          if(typeof window.orientation !== 'undefined'){
-            this.infiniteScrolling = false;
-          }else{
-            this.infiniteScrolling = true;
-          }
-        }
-        this.localeChanged();
-        this.surroundDate(this.date);
-        this.dateChanged();
-
-        console.log(this.months);
       }
+
+
 
 
 

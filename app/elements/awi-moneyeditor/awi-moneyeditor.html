@@ -9,6 +9,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="money-input.html">
 
 <dom-module id="awi-moneyeditor">
   <style>
@@ -17,7 +18,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
   </style>
   <template>
-    <div>Hello from <span>{{foo}}</span></div>
+    <paper-input-container always-float-label auto-validate attr-for-value="value">
+      <label>{{label}}</label>
+      <money-input class="paper-input-input" currency="$" amount="{{defaultValue}}" focused="{{isFocused}}"></money-input>
+      <paper-input-error>Amount invalid!</paper-input-error>
+    </paper-input-container>
+  </template>
   </template>
 </dom-module>
 <script>
@@ -26,11 +32,86 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     is: 'awi-moneyeditor',
 
     properties: {
-      foo: {
-        type: String,
-        value: 'bar',
+      name: {
+        type: String
+      },
+
+      label:{
+        type: String
+      },
+
+      tooltip:{
+        type: String
+      },
+
+      required:{
+        type: Boolean,
+        value: false
+      },
+
+      minValue:{
+        type: Number,
+        value: 0
+      },
+
+      maxValue:{
+        type:Number,
+        value: 2147483647
+      },
+
+      minLength:{
+        type: Number
+      },
+
+      maxLength:{
+        type: Number
+      },
+
+      height:{
+        type: Number
+      },
+
+      width:{
+        type: Number
+      },
+
+      defaultValue:{
+        type: String
+      },
+
+      isFocused:{
+        type: Boolean,
+        value: false,
         notify: true
+      },
+
+      _boundOnFocus: {
+        type: Function,
+        value: function() {
+          return this._onFocus.bind(this);
+        }
+      },
+
+      _boundOnBlur: {
+        type: Function,
+        value: function() {
+          return this._onBlur.bind(this);
+        }
       }
+
+    },
+
+    ready: function() {
+      this.addEventListener('focus', this._boundOnFocus, true);
+      this.addEventListener('blur', this._boundOnBlur, true);
+    },
+
+    _onFocus: function() {
+      this.isFocused = true;
+    },
+
+    _onBlur: function() {
+      this.isFocused = false;
     }
   });
 })();
