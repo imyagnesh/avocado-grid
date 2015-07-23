@@ -23,13 +23,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <label>{{label}}</label>
       <number-input class="paper-input-input"
                    name="{{name}}"
-                    default-value="{{defaultValue}}"
+                   value="{{computeVal(value,defaultValue)}}"
                    maxlength="[[maxLength]]"
                    minlength="[[maxLength]]"
                    required="[[required]]"
                    min$="{{minValue}}"
-                   max$="{{maxValue}}"></number-input>
-      <paper-input-error>Invalid input!</paper-input-error>
+                   max$="{{maxValue}}"
+                    readonly="{{readonly}}"
+        ></number-input>
+      <paper-input-error>{{computeError(label)}}</paper-input-error>
     </paper-input-container>
   </template>
 </dom-module>
@@ -84,8 +86,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       defaultValue:{
         type: String
+      },
+
+      readonly:{
+        type: Boolean,
+        value: true
       }
 
+    },
+
+    computeVal: function (value,defaultValue) {
+      return value === '' ? defaultValue : value;
+    },
+
+    computeError: function (label) {
+      return label + ' is not valid!';
     }
   });
 })();

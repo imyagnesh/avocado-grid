@@ -17,21 +17,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
   </style>
   <template>
-    <paper-checkbox></paper-checkbox>
+    <paper-checkbox checked="[[value]]" disabled="[[readonly]]"></paper-checkbox>
   </template>
 </dom-module>
 <script>
 (function() {
   Polymer({
-    is: 'awi-checkbox',
-
-    properties: {
-      foo: {
-        type: String,
-        value: 'bar',
-        notify: true
-      }
-    }
+    is: 'awi-checkbox'
   });
 })();
 </script>

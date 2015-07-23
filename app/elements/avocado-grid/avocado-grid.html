@@ -119,26 +119,79 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </template>
         <template is="dom-repeat" items="{{grid}}" as="header">
           <div content>
-            <template is="dom-if" if="{{readonly}}">
-              <span>{{computeVal(data,header)}}</span>
-            </template>
-            <template is="dom-if" if="{{!readonly}}">
+            <!--<template is="dom-if" if="{{readonly}}">-->
+              <!--<span>{{computeVal(data,header)}}</span>-->
+            <!--</template>-->
+            <!--<template is="dom-if" if="{{!readonly}}">-->
               <template is="dom-if" if="{{ isEqual(header.control,'awi-textbox') }}">
-                <awi-textbox name="{{header.name}}" label="{{header.label}}"  value="{{computeVal(data,header)}}"></awi-textbox>
+                <awi-textbox name="{{header.name}}"
+                             label="{{header.label}}"
+                             value="{{computeVal(data,header)}}"
+                             type="{{header.type}}"
+                             required="{{header.required}}"
+                             min-length="{{header.min-length}}"
+                             max-length="{{header.max-lenght}}"
+                             default-value="{{header.default-value}}"
+                             readonly="{{readonly}}"
+                  ></awi-textbox>
               </template>
               <template is="dom-if" if="{{ isEqual(header.control,'awi-numbereditor') }}">
-                <awi-numbereditor name="{{header.name}}" label="{{header.label}}"  value="{{computeVal(data,header)}}"></awi-numbereditor>
+                <awi-numbereditor name="{{header.name}}"
+                                  label="{{header.label}}"
+                                  value="{{computeVal(data,header)}}"
+                                  type="{{header.type}}"
+                                  required="{{header.required}}"
+                                  min-length="{{header.min-length}}"
+                                  max-length="{{header.max-lenght}}"
+                                  default-value="{{header.default-value}}"
+                                  min-value="{{header.min-value}}"
+                                  max-value="{{header.max-value}}"
+                                  readonly="{{readonly}}"
+                  ></awi-numbereditor>
               </template>
               <template is="dom-if" if="{{ isEqual(header.control,'awi-moneyeditor') }}">
-                <awi-moneyeditor name="{{header.name}}" label="{{header.label}}"  value="{{computeVal(data,header)}}"></awi-moneyeditor>
+                <awi-moneyeditor name="{{header.name}}"
+                                 label="{{header.label}}"
+                                 value="{{computeVal(data,header)}}"
+                                 type="{{header.type}}"
+                                 required="{{header.required}}"
+                                 min-length="{{header.min-length}}"
+                                 max-length="{{header.max-lenght}}"
+                                 default-value="{{header.default-value}}"
+                                 min-value="{{header.min-value}}"
+                                 max-value="{{header.max-value}}"
+                                 readonly="{{readonly}}"></awi-moneyeditor>
               </template>
               <template is="dom-if" if="{{ isEqual(header.control,'awi-percenteditor') }}">
-                <awi-percenteditor name="{{header.name}}" label="{{header.label}}"  value="{{computeVal(data,header)}}"></awi-percenteditor>
+                <awi-percenteditor name="{{header.name}}"
+                                   label="{{header.label}}"
+                                   value="{{computeVal(data,header)}}"
+                                   type="{{header.type}}"
+                                   required="{{header.required}}"
+                                   min-length="{{header.min-length}}"
+                                   max-length="{{header.max-lenght}}"
+                                   default-value="{{header.default-value}}"
+                                   min-value="{{header.min-value}}"
+                                   max-value="{{header.max-value}}"
+                                   readonly="{{readonly}}"></awi-percenteditor>
               </template>
               <template is="dom-if" if="{{ isEqual(header.control,'awi-checkbox') }}">
-                <awi-checkbox name="{{header.name}}" label="{{header.label}}"  value="{{computeVal(data,header)}}"></awi-checkbox>
+                <awi-checkbox name="{{header.name}}"
+                              label="{{header.label}}"
+                              value="{{computeVal(data,header)}}"
+                              readonly="{{readonly}}"></awi-checkbox>
               </template>
-            </template>
+              <template is="dom-if" if="{{ isEqual(header.control,'awi-radiolist') }}">
+                <awi-radiolist name="{{header.name}}"
+                               label="{{header.label}}"
+                               value="{{computeVal(data,header)}}"></awi-radiolist>
+              </template>
+              <template is="dom-if" if="{{ isEqual(header.control,'awi-combobox') }}">
+                <awi-combobox name="{{header.name}}"
+                              label="{{header.label}}"
+                              value="{{computeVal(data,header)}}"></awi-combobox>
+              </template>
+            <!--</template>-->
             <!--<bind-json grid="{{data}}" binding="{{header}}" read-only="{{readOnly}}"></bind-json>-->
           </div>
         </template>
@@ -200,7 +253,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         readonly: {
           type: Boolean,
-          value: false
+          value: true
         },
 
         height: {

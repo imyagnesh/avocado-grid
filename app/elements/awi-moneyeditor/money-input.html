@@ -35,7 +35,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <input is="iron-input" bind-value="[[currency]]" tabindex="-1" size="1" readonly>
       &nbsp;
     </template>
-    <input is="iron-input" bind-value="{{amount}}" class="flax">
+    <input is="iron-input"
+           bind-value="{{amount}}"
+           maxlength$="[[maxlength]]"
+           required$="[[required]]"
+           minlength$="[[minLength]]"
+           name$="[[name]]"
+           readonly$="[[readonly]]">
   </template>
 
 </dom-module>
@@ -84,7 +90,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       ],
 
       _computeValue: function(amount) {
-        this.value = amount;
+        this.value = amount.toString();
       }
 
     })

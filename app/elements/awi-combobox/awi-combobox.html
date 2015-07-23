@@ -1,0 +1,59 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="html-echo.html">
+<link rel="import" href="awi-combobox-theme.html">
+
+<dom-module id="awi-combobox">
+  <!--<link rel="stylesheet" href="awi-combobox.css">-->
+  <style>
+    :host {
+      display: block;
+    }
+  </style>
+  <template>
+    <!--<country-service id="service" data="{{data}}"></country-service>-->
+    <array-selector id="selector" items="{{data}}" selected="{{selected}}" toggle multi="multi"></array-selector>
+    <!--multi-->
+      <div class$="{{computeClass(multi,searchable,isOpen,focused,disabled,hasValue)}}" on-keydown="handleKeyDown"
+           on-mousedown="handleMouseDown">
+        <input type="hidden" value="">
+        <div class="Select-control" id="selectControl">
+          <div class="Select-placeholder" id="SelectPlaceholder">{{placeholder}}</div>
+          <template is="dom-if" if="{{multi}}">
+            <template is="dom-repeat" items="{{selected}}" id="selectedRepeater">
+              <div class="Select-item">
+                <span class="Select-item-icon" on-click="removeItem">×</span>
+                <span class="Select-item-label">
+                  <a class="Select-item-label__a"><html-echo html="{{convertHTML(display,item)}}"></html-echo></a>
+                </span>
+              </div>
+            </template>
+          </template>
+          <div style="display:inline-block;width:100%;" class="Select-input">
+            <input type="text" style="width:100%;" autofocus="false" tabindex="0" id="search" on-input="searchVal"
+                   value="{{hostValue::input}}" on-focus="focusDropDown" on-blur="blurDropDown">
+            <div
+              style="position: absolute; visibility: hidden; height: 0px; width: 0px; overflow: scroll; white-space: nowrap; font-size: 14px; font-family: Helvetica Neue,Helvetica,Arial,sans-serif;">
+            </div>
+          </div>
+          <span class="Select-arrow"></span>
+        </div>
+        <iron-collapse opened="{{isOpen}}">
+          <div class="Select-menu-outer">
+            <div class="Select-menu" id="scroll" on-scroll="scrollData">
+              <div class="canvas">
+                <template is="dom-repeat" items="{{cData}}" id="domRepeat" >
+                    <html-echo class$="{{checkDisable(item)}}" on-click="selectOption" style$="{{computeTop(index)}}" html="{{convertHTML(html,item)}}" search="{{hostValue}}"></html-echo>
+                  <!--on-mouseover="onHovered" on-mouseout="onUnhovered"-->
+                </template>
+              </div>
+            </div>
+            <div class="Select-noresults" hidden$="{{noResultFound}}">No results found</div>
+          </div>
+        </iron-collapse>
+      </div>
+  </template>
+</dom-module>
+
+
+<script src="awi-combobox.js"></script>
+

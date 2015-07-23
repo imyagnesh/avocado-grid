@@ -17,7 +17,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
   </style>
   <template>
-    <paper-input name="{{name}}" label="{{label}}" auto-validate minlength="{{minLength}}" maxlength="{{maxLength}}" error-message="letters only!" required="{{required}}" value="{{value}}"></paper-input>
+    <paper-input name="{{name}}"
+                 label="{{label}}"
+                 minlength="{{minLength}}"
+                 maxlength="{{maxLength}}"
+                 value="{{computeVal(value,defaultValue)}}"
+                 required="{{required}}"
+                 readonly="{{readonly}}"
+                 error-message="{{computeError(label)}}" auto-validate ></paper-input>
   </template>
 </dom-module>
 <script>
@@ -49,9 +56,32 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       value:{
+        type: String,
+        value:''
+      },
+
+      readonly:{
+        type: Boolean,
+        value: false
+      },
+
+      type:{
         type: String
+      },
+
+      defaultValue:{
+        type: String,
+        value:''
       }
 
+    },
+
+    computeVal: function (value,defaultValue) {
+      return value === '' ? defaultValue : value;
+    },
+
+    computeError: function (label) {
+      return label + ' is not valid!';
     }
   });
 })();

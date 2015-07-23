@@ -20,7 +20,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <template>
     <paper-input-container always-float-label auto-validate attr-for-value="value">
       <label>{{label}}</label>
-      <percent-input class="paper-input-input" percentage="{{value}}" focused="{{isFocused}}"></percent-input>
+      <percent-input class="paper-input-input"
+                     name="{{name}}"
+                     percentage="{{computeVal(value,defaultValue)}}"
+                     maxlength="[[maxLength]]"
+                     minlength="[[maxLength]]"
+                     required="[[required]]"
+                     min$="{{minValue}}"
+                     max$="{{maxValue}}"
+                     focused="{{isFocused}}"></percent-input>
       <paper-input-error>Amount invalid!</paper-input-error>
     </paper-input-container>
   </template>
@@ -31,12 +39,56 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'awi-percenteditor',
 
       properties: {
-        label: {
+        name: {
           type: String
         },
 
-        value :{
+        label:{
           type: String
+        },
+
+        tooltip:{
+          type: String
+        },
+
+        required:{
+          type: Boolean,
+          value: false
+        },
+
+        minValue:{
+          type: Number,
+          value: 0
+        },
+
+        maxValue:{
+          type:Number,
+          value: 2147483647
+        },
+
+        minLength:{
+          type: Number
+        },
+
+        maxLength:{
+          type: Number
+        },
+
+        height:{
+          type: Number
+        },
+
+        width:{
+          type: Number
+        },
+
+        defaultValue:{
+          type: String
+        },
+
+        readonly:{
+          type: Boolean,
+          value: true
         },
 
         isFocused:{
@@ -72,6 +124,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _onBlur: function() {
         this.isFocused = false;
+      },
+
+      computeVal: function (value,defaultValue) {
+        return value === '' ? defaultValue : value;
+      },
+
+      computeError: function (label) {
+        return label + ' is not valid!';
       }
     });
   })();

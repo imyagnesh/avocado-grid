@@ -20,8 +20,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <template>
     <paper-input-container always-float-label auto-validate attr-for-value="value">
       <label>{{label}}</label>
-      <money-input class="paper-input-input" currency="$" amount="{{defaultValue}}" focused="{{isFocused}}"></money-input>
-      <paper-input-error>Amount invalid!</paper-input-error>
+      <money-input class="paper-input-input"
+                   currency="$"
+                   name="{{name}}"
+                   amount="{{computeVal(value,defaultValue)}}"
+                   maxlength="[[maxLength]]"
+                   minlength="[[maxLength]]"
+                   required="[[required]]"
+                   min$="{{minValue}}"
+                   max$="{{maxValue}}"
+                   focused="{{isFocused}}"
+        ></money-input>
+      <paper-input-error>{{computeError(label)}}</paper-input-error>
     </paper-input-container>
   </template>
   </template>
@@ -79,6 +89,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         type: String
       },
 
+      readonly:{
+        type: Boolean,
+        value: true
+      },
+
       isFocused:{
         type: Boolean,
         value: false,
@@ -112,6 +127,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     _onBlur: function() {
       this.isFocused = false;
+    },
+
+    computeVal: function (value,defaultValue) {
+      return value === '' ? defaultValue : value;
+    },
+
+    computeError: function (label) {
+      return label + ' is not valid!';
     }
   });
 })();

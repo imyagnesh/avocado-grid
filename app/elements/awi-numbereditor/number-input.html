@@ -33,12 +33,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <number-validator min="{{minValue}}" max="{{maxValue}}"></number-validator>
 
     <input is="iron-input" id="input"
-           bind-value="{{defaultValue}}"
-           maxlength$="[[minLength]]"
+           bind-value="{{value}}"
+           maxlength$="[[maxlength]]"
            required$="[[required]]"
            minlength$="[[minLength]]"
            name$="[[name]]"
-           size$="[[size]]">
+           readonly>
   </template>
 
 </dom-module>
@@ -104,15 +104,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: String,
           value: 'number-validator'
         }
-
       },
 
       observers: [
-        '_computeValue(defaultValue)'
+        '_computeValue(value)'
       ],
 
-      _computeValue: function(defaultValue) {
-        this.value = defaultValue;
+      _computeValue: function(value) {
+        this.value = value;
       }
 
     })

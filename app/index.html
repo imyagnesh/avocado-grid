@@ -63,6 +63,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                handle-as="json" last-response="{{cellResponse}}"></iron-ajax>
     <iron-ajax auto url="../api/grid.json"
                handle-as="json" last-response="{{gridResponse}}"></iron-ajax>
+    <iron-ajax auto url="../api/countries.json"
+               handle-as="json" last-response="{{response}}"></iron-ajax>
     <avocado-grid grid="{{gridResponse}}" cell="{{cellResponse}}"></avocado-grid>
     <!--<div style="margin-left:20px;">-->
       <!--<awi-date-picker-diolog></awi-date-picker-diolog>-->
@@ -75,6 +77,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <!--<awi-checkbox></awi-checkbox>-->
     <!--<awi-numbereditor name="xyz" label="abc" default-value="123"></awi-numbereditor>-->
     <!--<awi-year-picker id="yearPicker" min="2010" max="2021" year="2015" cross-fade></awi-year-picker>-->
+
+    <awi-combobox data="{{response}}"
+                  display="{name} {code}"
+                  html="<table><tr><td valign='middle'>{name} {code}</td></tr></table>"
+                  key="name"
+                  selected-item="Antarctica"></awi-combobox>
   </template>
   <!-- build:js scripts/app.js -->
   <script src="scripts/app.js"></script>
