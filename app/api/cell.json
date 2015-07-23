@@ -1,6 +1,7 @@
 [{
   "accName" : "Credit Card Account",
-  "accNumber" : "46302548",
-  "accBalance" : "203.58",
-  "active" : "true"
+  "accNumber" : 46302548,
+  "accBalance" : 203.58,
+  "interest" : 15,
+  "active" : true
 }]

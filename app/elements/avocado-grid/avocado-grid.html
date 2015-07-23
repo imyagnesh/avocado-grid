@@ -112,17 +112,37 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <div id="canvas">
       <template is="dom-repeat" id="cellList" items="{{iCell}}" as="data">
       <div body class="renderer">
-        <template is="dom-if" if="{{!readOnly}}">
+        <template is="dom-if" if="{{!readonly}}">
         <div tool>
           <paper-checkbox on-change="select" checked="{{isSelected(data)}}"></paper-checkbox>
         </div>
         </template>
         <template is="dom-repeat" items="{{grid}}" as="header">
           <div content>
-            <bind-json grid="{{data}}" binding="{{header}}" read-only="{{readOnly}}"></bind-json>
+            <template is="dom-if" if="{{readonly}}">
+              <span>{{computeVal(data,header)}}</span>
+            </template>
+            <template is="dom-if" if="{{!readonly}}">
+              <template is="dom-if" if="{{ isEqual(header.control,'awi-textbox') }}">
+                <awi-textbox name="{{header.name}}" label="{{header.label}}"  value="{{computeVal(data,header)}}"></awi-textbox>
+              </template>
+              <template is="dom-if" if="{{ isEqual(header.control,'awi-numbereditor') }}">
+                <awi-numbereditor name="{{header.name}}" label="{{header.label}}"  value="{{computeVal(data,header)}}"></awi-numbereditor>
+              </template>
+              <template is="dom-if" if="{{ isEqual(header.control,'awi-moneyeditor') }}">
+                <awi-moneyeditor name="{{header.name}}" label="{{header.label}}"  value="{{computeVal(data,header)}}"></awi-moneyeditor>
+              </template>
+              <template is="dom-if" if="{{ isEqual(header.control,'awi-percenteditor') }}">
+                <awi-percenteditor name="{{header.name}}" label="{{header.label}}"  value="{{computeVal(data,header)}}"></awi-percenteditor>
+              </template>
+              <template is="dom-if" if="{{ isEqual(header.control,'awi-checkbox') }}">
+                <awi-checkbox name="{{header.name}}" label="{{header.label}}"  value="{{computeVal(data,header)}}"></awi-checkbox>
+              </template>
+            </template>
+            <!--<bind-json grid="{{data}}" binding="{{header}}" read-only="{{readOnly}}"></bind-json>-->
           </div>
         </template>
-        <template is="dom-if" if="{{!readOnly}}">
+        <template is="dom-if" if="{{!readonly}}">
         <div tool>
           <paper-icon-button icon="delete" on-click="deleteItem"></paper-icon-button>
         </div>
@@ -146,7 +166,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </template>
       </div>
       </div>
-      <template is="dom-if" if="{{!readOnly}}">
+      <template is="dom-if" if="{{!readonly}}">
       <div footer>
       <paper-icon-button icon="add" on-click="addItem"></paper-icon-button>
       </div>
@@ -178,7 +198,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: Boolean
         },
 
-        readOnly: {
+        readonly: {
           type: Boolean,
           value: false
         },
@@ -237,6 +257,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.changeScrollPosition(0);
       },
 
+      computeVal: function (grid,binding) {
+        return grid[binding.name];
+      },
+
+      isEqual: function(source, target) {
+        return source === target;
+      },
 
       computeCellsPerPage: function (height, rowHeight) {
         return Math.round(height / rowHeight);
@@ -283,6 +310,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       isSelected : function (data) {
+        console.log(data);
         return  _.some(this.selected, data);
       },
 

@@ -32,10 +32,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <template>
     <money-validator></money-validator>
     <template is="dom-if" if="{{!focused}}">
-      <input is="iron-input" bind-value="[[currency]]" tabindex="-1" readonly>
+      <input is="iron-input" bind-value="[[currency]]" tabindex="-1" size="1" readonly>
       &nbsp;
     </template>
-    <input is="iron-input" bind-value="{{amount}}">
+    <input is="iron-input" bind-value="{{amount}}" class="flax">
   </template>
 
 </dom-module>

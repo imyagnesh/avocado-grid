@@ -7,32 +7,32 @@
     <template is="dom-if" if="{{readOnly}}">
       <span>{{computeVal(grid,binding)}}</span>
     </template>
-    <template is="dom-if" if="{{!readOnly}}">
-      <template is="dom-if" if="{{ isEqual(binding.control,'awi-textbox') }}">
-        <awi-textbox name="{{binding.name}}" label="{{binding.label}}"  value="{{computeVal(grid,binding)}}"></awi-textbox>
-      </template>
-      <template is="dom-if" if="{{ isEqual(binding.control,'awi-numbereditor') }}">
-        <awi-numbereditor name="{{binding.name}}" label="{{binding.label}}"  default-value="{{computeVal(grid,binding)}}"></awi-numbereditor>
+    <!--<template is="dom-if" if="{{!readOnly}}">-->
+      <!--<template is="dom-if" if="{{ isEqual(binding.control,'awi-textbox') }}">-->
         <!--<awi-textbox name="{{binding.name}}" label="{{binding.label}}"  value="{{computeVal(grid,binding)}}"></awi-textbox>-->
-      </template>
-      <template is="dom-if" if="{{ isEqual(binding.control,'awi-moneyeditor') }}">
-        <awi-moneyeditor label="money"></awi-moneyeditor>
-        <!--<awi-moneyeditor label="{{binding.label}}"  default-value="{{computeVal(grid,binding)}}"></awi-moneyeditor>-->
-        <!--<awi-textbox name="{{binding.name}}" label="{{binding.label}}"  value="{{computeVal(grid,binding)}}"></awi-textbox>-->
-      </template>
-      <template is="dom-if" if="{{ isEqual(binding.control,'awi-percenteditor') }}">
-        <!--<awi-percenteditor name="{{binding.name}}" label="{{binding.label}}"  value="{{computeVal(grid,binding)}}"></awi-percenteditor>-->
-        <!--<awi-textbox name="{{binding.name}}" label="{{binding.label}}"  value="{{computeVal(grid,binding)}}"></awi-textbox>-->
-      </template>
-      <template is="dom-if" if="{{ isEqual(binding.control,'awi-checkbox') }}">
-        <!--<awi-checkbox></awi-checkbox>-->
-        <!--<awi-textbox name="{{binding.name}}" label="{{binding.label}}"  value="{{computeVal(grid,binding)}}"></awi-textbox>-->
-      </template>
-      <template is="dom-if" if="{{ isEqual(binding.control,'awi-radiolist') }}">
-        <!--<awi-radiolist></awi-radiolist>-->
-        <!--<awi-textbox name="{{binding.name}}" label="{{binding.label}}"  value="{{computeVal(grid,binding)}}"></awi-textbox>-->
-      </template>
-    </template>
+      <!--</template>-->
+      <!--<template is="dom-if" if="{{ isEqual(binding.control,'awi-textbox') }}">-->
+        <!--<awi-numbereditor name="{{binding.name}}" label="{{binding.label}}"  default-value="{{computeVal(grid,binding)}}"></awi-numbereditor>-->
+        <!--&lt;!&ndash;<awi-textbox name="{{binding.name}}" label="{{binding.label}}"  value="{{computeVal(grid,binding)}}"></awi-textbox>&ndash;&gt;-->
+      <!--</template>-->
+      <!--<template is="dom-if" if="{{ isEqual(binding.control,'awi-moneyeditor') }}">-->
+        <!--<awi-moneyeditor label="money"></awi-moneyeditor>-->
+        <!--&lt;!&ndash;<awi-moneyeditor label="{{binding.label}}"  default-value="{{computeVal(grid,binding)}}"></awi-moneyeditor>&ndash;&gt;-->
+        <!--&lt;!&ndash;<awi-textbox name="{{binding.name}}" label="{{binding.label}}"  value="{{computeVal(grid,binding)}}"></awi-textbox>&ndash;&gt;-->
+      <!--</template>-->
+      <!--<template is="dom-if" if="{{ isEqual(binding.control,'awi-percenteditor') }}">-->
+        <!--&lt;!&ndash;<awi-percenteditor name="{{binding.name}}" label="{{binding.label}}"  value="{{computeVal(grid,binding)}}"></awi-percenteditor>&ndash;&gt;-->
+        <!--&lt;!&ndash;<awi-textbox name="{{binding.name}}" label="{{binding.label}}"  value="{{computeVal(grid,binding)}}"></awi-textbox>&ndash;&gt;-->
+      <!--</template>-->
+      <!--<template is="dom-if" if="{{ isEqual(binding.control,'awi-checkbox') }}">-->
+        <!--&lt;!&ndash;<awi-checkbox></awi-checkbox>&ndash;&gt;-->
+        <!--&lt;!&ndash;<awi-textbox name="{{binding.name}}" label="{{binding.label}}"  value="{{computeVal(grid,binding)}}"></awi-textbox>&ndash;&gt;-->
+      <!--</template>-->
+      <!--<template is="dom-if" if="{{ isEqual(binding.control,'awi-radiolist') }}">-->
+        <!--&lt;!&ndash;<awi-radiolist></awi-radiolist>&ndash;&gt;-->
+        <!--&lt;!&ndash;<awi-textbox name="{{binding.name}}" label="{{binding.label}}"  value="{{computeVal(grid,binding)}}"></awi-textbox>&ndash;&gt;-->
+      <!--</template>-->
+    <!--</template>-->
   </template>
 </dom-module>
 <script>
@@ -43,17 +43,19 @@
     properties: {
       grid: Object,
       binding: Object,
-      readOnly: Boolean
+      readOnly: {
+        type: Boolean,
+        value: true
+      }
     },
 
     computeVal: function (grid,binding) {
+      console.log(grid);
+      console.log(binding);
       return grid[binding.name];
     },
 
     isEqual: function(source, target) {
-      console.log(source);
-      console.log(target);
-      console.log(source === target);
       return source === target;
     }
 
