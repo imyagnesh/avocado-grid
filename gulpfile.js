@@ -20,6 +20,7 @@ var merge = require('merge-stream');
 var path = require('path');
 var fs = require('fs');
 var glob = require('glob');
+var install = require("gulp-install");
 
 var AUTOPREFIXER_BROWSERS = [
   'ie >= 10',
@@ -52,6 +53,11 @@ gulp.task('styles', function () {
 
 gulp.task('elements', function () {
   return styleTask('elements', ['**/*.css']);
+});
+
+gulp.task('installBower', function () {
+  return gulp.src(['./bower.json', './package.json'])
+    .pipe(install());
 });
 
 // Lint JavaScript
@@ -231,6 +237,7 @@ gulp.task('serve:dist', ['default'], function () {
 // Build Production Files, the Default Task
 gulp.task('default', ['clean'], function (cb) {
   runSequence(
+    ['installBower'],
     ['copy', 'styles'],
     'elements',
     ['jshint', 'images', 'fonts', 'html'],
