@@ -34,6 +34,7 @@
     "node": ">=0.10.0"
   },
   "dependencies": {
+    "gulp-install": "^0.4.0",
     "less": "^2.5.1"
   }
 }

@@ -141,7 +141,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     var cleanMonthDateArrayObject = function(obj){
       var m = obj[0] % 12;
       return [m < 0 ? m + 12: m, obj[1]+Math.floor(obj[0]/12)];
-    }
+    };
 
     Polymer({
       is: 'awi-date-picker',
@@ -259,15 +259,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         end = cleanMonthDateArrayObject(end);
         var curMonth = start[0];
         var curYear = start[1];
-        var date, start, end;
+        var date;
 
         this.months = [];
 
-        while(curYear < end[1] || (curYear == end[1] && curMonth <= end[0])){
+        while(curYear < end[1] || (curYear === end[1] && curMonth <= end[0])){
 
           var month = {
             days: [],
-            name: "",
+            name: '',
             number: curMonth,
             year: curYear
           };
@@ -294,7 +294,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this.push('months', month);
 
           curMonth++;
-          if(curMonth == 13){
+          if(curMonth === 13){
             curMonth = 1;
             curYear++;
           }
@@ -306,8 +306,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       computeClass: function (day,month,currentDay,currentMonth,currentYear) {
         var classList = [];
         classList.push('day');
-//        {{ { selected : day.n == currentDay && month.number == currentMonth && month.year == currentYear } | tokenList }}
-        if (day.n == currentDay && month.number == currentMonth && month.year == currentYear) {
+//        {{ { selected : day.n === currentDay && month.number === currentMonth && month.year === currentYear } | tokenList }}
+        if (day.n === currentDay && month.number === currentMonth && month.year === currentYear) {
           classList.push('selected');
         }
 
@@ -324,9 +324,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var month = data.month;
         var year = data.year;
         if(day && month && year){
-//          console.log("set date?");
+//          console.log('set date?');
           this.date = new Date(year, month-1, day);
-//          this.fire("selection-changed");
+//          this.fire('selection-changed');
         }
       },
       refreshScrollPosition: function(){
@@ -334,7 +334,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         setTimeout(function(){
 
-          var monthElements = Polymer.dom(that.root).querySelectorAll(".month");
+          var monthElements = Polymer.dom(that.root).querySelectorAll('.month');
           var startLoadedDateOutsideTriggerRange = new Date(monthElements[that.triggerRange].dataset.year,monthElements[that.triggerRange].dataset.month*1-1,1);
           var endLoadedDateOutsideTriggerRange = new Date(monthElements[monthElements.length - that.triggerRange - 1].dataset.year,monthElements[monthElements.length - that.triggerRange - 1].dataset.month*1-1+1,1);
 
@@ -346,11 +346,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         setTimeout(function(){
 
-          var monthElements = Polymer.dom(that.root).querySelectorAll(".month");
+          var monthElements = Polymer.dom(that.root).querySelectorAll('.month');
           var scrollTop = 0;
 
           for(var i=0;i<monthElements.length;i++){
-            if(monthElements[i].querySelector(".day.selected")){
+            if(monthElements[i].querySelector('.day.selected')){
               break;
             }else{
               scrollTop += monthElements[i].clientHeight;
@@ -377,7 +377,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       scrollFinished: function(){
 
         if(this.infiniteScrolling){
-          var monthElements = Polymer.dom(this.root).querySelectorAll(".month");
+          var monthElements = Polymer.dom(this.root).querySelectorAll('.month');
 
           for(var i=monthElements.length-1;i>=0;i--){
             if(this.$.container.scrollTop+this.$.container.clientHeight/2 > monthElements[i].offsetTop){

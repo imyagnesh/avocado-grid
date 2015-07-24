@@ -18,7 +18,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
   </style>
   <template>
-    <paper-input-container always-float-label auto-validate attr-for-value="value">
+    <paper-input-container always-float-label auto-validate attr-for-value="value" >
       <label>{{label}}</label>
       <money-input class="paper-input-input"
                    currency="$"
@@ -87,11 +87,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       defaultValue:{
         type: String
-      },
-
-      readonly:{
-        type: Boolean,
-        value: true
       },
 
       isFocused:{

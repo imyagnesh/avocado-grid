@@ -115,7 +115,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var classList = [];
         classList.push('year');
 //        {{ { selected : day.n == currentDay && month.number == currentMonth && month.year == currentYear } | tokenList }}
-        if (y.n == year) {
+        if (y.n === year) {
           classList.push('selected');
         }
 
@@ -153,9 +153,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       yearSelected: function(e) {
 
-        for(i=0;i<e.path.length;i++){
+        for(var i=0;i<e.path.length;i++){
           if(e.path[i].dataset && e.path[i].dataset.year){
-            return this.year = parseInt(e.path[i].dataset.year);
+            this.year = parseInt(e.path[i].dataset.year);
+            return;
           }
         }
       },
