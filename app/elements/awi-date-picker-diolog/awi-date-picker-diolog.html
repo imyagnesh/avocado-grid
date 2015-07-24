@@ -9,6 +9,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="awi-date-picker-theme.html">
+
 
 <dom-module id="awi-date-picker-diolog">
   <style>
@@ -34,10 +36,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </section>
         </neon-animated-pages>
       </div>
+
     <div class="buttons">
-      <paper-button >More Info...</paper-button>
-      <paper-button dialog-dismiss>Cancel</paper-button>
-      <paper-button dialog-confirm autofocus on-tap={{setDate}}>OK</paper-button>
+      <paper-button tabindex="0">Cancel</paper-button>
+      <paper-button tabindex="0" on-tap={{setDate}}>OK</paper-button>
     </div>
   </paper-dialog>
   </template>
@@ -110,7 +112,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       dayOfWeek: {
         type: String,
-        value:''
+        value:'',
+        notify: true
       },
       dayOfMonth: {
         type: Number,

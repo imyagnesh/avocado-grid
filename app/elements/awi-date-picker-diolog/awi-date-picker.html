@@ -151,7 +151,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         date:{
           type: Date,
           value: new Date(),
-          observer: 'dateChanged'
+          observer: 'dateChanged',
+          notify: true
         },
 
         min:{
@@ -324,8 +325,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var month = data.month;
         var year = data.year;
         if(day && month && year){
-//          console.log('set date?');
-          this.date = new Date(year, month-1, day);
+          console.log('set date?');
+          this.set('date',new Date(year, month-1, day));
+//          this.date = new Date(year, month-1, day);
 //          this.fire('selection-changed');
         }
       },

@@ -48,5 +48,15 @@
     "type" : "boolean",
     "default-value" : true,
     "control" : "awi-checkbox"
+  },
+  {
+    "label": "Country",
+    "name" : "countries",
+    "type" : "object",
+    "display" : "{name} {code}",
+    "html" : "<table><tr><td valign='middle'>{name} {code}</td></tr></table>",
+    "key" : "name",
+    "default-value" : "Antarctica",
+    "control" : "awi-combobox"
   }
 ]
