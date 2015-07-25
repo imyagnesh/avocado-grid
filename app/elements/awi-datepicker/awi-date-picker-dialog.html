@@ -1,0 +1,279 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link href="../../../bower_components/paper-dialog/paper-dialog.html" rel="import">
+<link href="../../../bower_components/paper-button/paper-button.html" rel="import">
+<link rel="import" href="../../../bower_components/neon-animation/neon-animated-pages.html">
+<link rel="import" href="../../../bower_components/neon-animation/neon-animations.html">
+<link rel="import" href="../../../bower_components/iron-flex-layout/classes/iron-flex-layout.html">
+<!--<link rel="import" href="../../../bower_components/paper-styles/paper-styles.html">-->
+<link rel="import" href="../../styles/app-theme.html">
+
+<link href="awi-date-picker.html" rel="import">
+<link href="awi-year-picker.html" rel="import">
+
+<dom-module id="awi-date-picker-dialog">
+  <style>
+    :host {
+      display: block;
+    }
+
+  </style>
+  <template>
+    <paper-dialog id="dialog" class="date-picker-dialog" entry-animation="scale-up-animation" exit-animation="fade-out-animation" with-backdrop>
+      <div id="container">
+        <div class="header layout vertical flex">
+          <div class="dayOfWeekContainer selected">{{ dayOfWeek }}</div>
+          <div class="monthContainer selected flex" on-tap="showDatePicker" id="month"><span>{{ monthShortName }}</span></div>
+          <div class="dayOfMonthContainer selected flex" on-tap="showDatePicker" id="day"><span>{{ dayOfMonth }}</span></div>
+          <div class="yearContainer flex" id="year" on-tap="showYearPicker"><span>{{ formattedYear }}</span></div>
+        </div>
+        <neon-animated-pages id="pages" class="datePickerContainer" selected="[[page]]" entry-animation="scale-up-animation" exit-animation="fade-out-animation" with-backdrop>
+          <section>
+            <awi-date-picker id="datePicker" min="{{min}}" max="{{max}}" date="{{ immediateDate }}" infiniteScrolling="{{infiniteScrolling}}" locale="{{locale}}" startDayOfWeek="{{startDayOfWeek}}"></awi-date-picker>
+          </section>
+          <section>
+            <awi-year-picker id="yearPicker" min="{{min}}" max="{{max}}" year="{{ year }}" locale="{{locale}}"></awi-year-picker>
+          </section>
+        </neon-animated-pages>
+      </div>
+      <div class="buttons">
+        <paper-button on-tap="setTodayDate">Today</paper-button>
+        <paper-button dialog-dismiss>Cancel</paper-button>
+        <paper-button dialog-confirm autofocus on-tap="setDate">OK</paper-button>
+      </div>
+    </paper-dialog>
+  </template>
+</dom-module>
+<script>
+  (function() {
+
+    var dayOfWeekNames = [
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+      'Sunday'
+    ];
+
+    var monthNames = [
+      'JAN',
+      'FEB',
+      'MAR',
+      'APR',
+      'MAY',
+      'JUN',
+      'JUL',
+      'AUG',
+      'SEP',
+      'OCT',
+      'NOV',
+      'DEC'
+    ];
+
+    Polymer({
+      is: 'awi-date-picker-dialog',
+
+      properties: {
+        value: {
+          type: String,
+          notify: true
+//          observer: 'valueChanged'
+        },
+
+        immediateDate:{
+          type: Date,
+          value:  new Date(),
+          observer: 'callFunction'
+        },
+
+        min: {
+          type: Date,
+          value: new Date(1900,0,1)
+        },
+
+        max: {
+          type: Date,
+          value: new Date(2100,11,31)
+        },
+
+        infiniteScrolling:{
+          type: String,
+          value: 'auto'
+        },
+
+        locale:{
+          type: Array
+        },
+
+        startDayOfWeek:{
+          type: Number,
+          value: 1
+        },
+
+        dayOfWeek: {
+          type: String,
+          value:''
+        },
+        dayOfMonth: {
+          type: Number,
+          value: 0
+        },
+        monthShortName: {
+          type: String,
+          value: ''
+        },
+        formattedYear: {
+          type: String,
+          value:''
+        },
+        year:{
+          type: Number,
+          value:  0,
+          observer: 'yearChanged'
+        },
+        page: {
+          type: Number,
+          value:  0,
+          observer: 'pageChanged'
+        },
+
+        intl:{
+          type: Object,
+          value: function() {
+            return {};
+          }
+        }
+      },
+
+      setTodayDate: function () {
+        this.immediateDate = new Date();
+        this.$.datePicker.refreshScrollPosition();
+      },
+
+      callFunction: function (newValue) {
+        this.localeChanged();
+        this.immediateDateChanged();
+      },
+
+
+      localeChanged: function(){
+        this.intl = {};
+        this.intl.dayOfWeek = Intl.DateTimeFormat(this.locale, {weekday: 'long'}).format
+        this.intl.day = Intl.DateTimeFormat(this.locale, {day: 'numeric'}).format;
+        this.intl.shortMonth = Intl.DateTimeFormat(this.locale, {month: 'short'}).format;
+        this.intl.year = Intl.DateTimeFormat(this.locale, {year: 'numeric'}).format;
+      },
+
+      immediateDateChanged: function() {
+        this.dayOfWeek = this.intl.dayOfWeek(this.immediateDate);
+        this.dayOfMonth = this.intl.day(this.immediateDate);
+        this.monthShortName = this.intl.shortMonth(this.immediateDate);
+        this.formattedYear = this.intl.year(this.immediateDate);
+
+        this.year = this.immediateDate.getFullYear();
+        this.fire('selection-changed');
+      },
+
+      open: function() {
+        this.$.dialog.open();
+        this.dialogOpened();
+      },
+      dialogOpened: function(){
+        this.$.datePicker.refreshScrollPosition();
+        this.$.yearPicker.refreshScrollPosition();
+      },
+
+      yearChanged: function() {
+        var newDate = this.immediateDate.setYear(this.year);
+        if(newDate < this.min){
+          this.immediateDate = new Date(this.min);
+        }else if(newDate > this.max){
+          this.immediateDate = new Date(this.max);
+        }else{
+          this.immediateDate = new Date(newDate);
+        }
+        this.page = 0;
+      },
+
+      showYearPicker: function() {
+        this.page = 1;
+      },
+
+      showDatePicker: function() {
+        this.page = 0;
+      },
+
+      setDate: function(){
+        if(this.immediateDate <= this.max && this.immediateDate >= this.min){
+//          this.value = this.immediateDate.toISOString();
+          var dd = this.immediateDate.getDate();
+          var mm = this.immediateDate.getMonth()+1; //January is 0!
+
+          var yyyy = this.immediateDate.getFullYear();
+          if(dd<10){
+            dd='0'+dd
+          }
+          if(mm<10){
+            mm='0'+mm
+          }
+//          console.log(dd+'/'+mm+'/'+yyyy);
+          this.value = dd+'/'+mm+'/'+yyyy;
+          this.fire('value-changed');
+        }
+      },
+
+      pageChanged: function() {
+        if (this.page == 0) {
+          this.$.day.classList.add("selected");
+          this.$.month.classList.add("selected");
+          this.$.year.classList.remove("selected");
+        } else {
+          this.$.day.classList.remove("selected");
+          this.$.month.classList.remove("selected");
+          this.$.year.classList.add("selected");
+        }
+        this.$.datePicker.refreshScrollPosition();
+        this.$.yearPicker.refreshScrollPosition();
+      },
+
+      minChanged: function(){
+        if(typeof this.min == "string"){
+          this.min = new Date(this.min);
+        }
+      },
+
+      maxChanged: function(){
+        if(typeof this.max == "string"){
+          this.max = new Date(this.max);
+        }
+      },
+
+      valueChanged: function(){
+        if(typeof this.value == "string"){
+          this.value = new Date(this.value);
+        }
+      },
+
+      ready:function() {
+        if(this.value){
+          this.valueChanged();
+
+          this.immediateDate = this.value;
+        }
+        this.localeChanged();
+        this.immediateDateChanged();
+      }
+    });
+  })();
+</script>

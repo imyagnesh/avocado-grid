@@ -43,7 +43,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
 
   <!-- build:css styles/main.css -->
-  <link rel="stylesheet" href="styles/main.css">
+  <!--<link rel="stylesheet" href="styles/main.css">-->
   <!-- endbuild-->
 
   <!-- build:js bower_components/webcomponentsjs/webcomponents-lite.min.js -->
@@ -59,13 +59,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <body unresolved class="fullbleed layout vertical">
   <span id="browser-sync-binding"></span>
   <template is="dom-bind" id="app">
-    <iron-ajax auto url="../api/cell.json"
-               handle-as="json" last-response="{{cellResponse}}"></iron-ajax>
-    <iron-ajax auto url="../api/grid.json"
-               handle-as="json" last-response="{{gridResponse}}"></iron-ajax>
-    <iron-ajax auto url="../api/countries.json"
-               handle-as="json" last-response="{{response}}"></iron-ajax>
-    <avocado-grid grid="{{gridResponse}}" cell="{{cellResponse}}"></avocado-grid>
+    <!--awi-grid code-->
+
+    <!--<iron-ajax auto url="../api/cell.json"-->
+               <!--handle-as="json" last-response="{{cellResponse}}"></iron-ajax>-->
+    <!--<iron-ajax auto url="../api/grid.json"-->
+               <!--handle-as="json" last-response="{{gridResponse}}"></iron-ajax>-->
+    <!--<iron-ajax auto url="../api/countries.json"-->
+               <!--handle-as="json" last-response="{{response}}"></iron-ajax>-->
+    <!--<avocado-grid grid="{{gridResponse}}" cell="{{cellResponse}}"></avocado-grid>-->
+
+    <awi-date-picker-textbox></awi-date-picker-textbox>
     <!--<div style="margin-left:20px;">-->
       <!--<awi-date-picker-diolog></awi-date-picker-diolog>-->
       <!--<paper-button raised on-click="clickHandler">Open date picker dialog</paper-button>-->
