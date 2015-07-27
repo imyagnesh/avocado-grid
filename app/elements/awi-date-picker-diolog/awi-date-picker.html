@@ -108,14 +108,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <div id="container" on-click="pickDate" on-scroll="scrollFinished">
       <!-- on-scroll="scrollFinished-->
       <template is="dom-repeat" items="{{months}}" as="month" index-as="report_no">
-        <div class="month" data-month$="{{month.number}}" data-year$="{{month.year}}">
+        <div id="monthRepeat" class="month" data-month$="{{month.number}}" data-year$="{{month.year}}">
           <h1>{{month.name}}</h1>
           <div class="days">
             <template is="dom-repeat" items="{{weekDayNames}}" as="name">
               <div class="day title">{{name}}</div>
             </template>
 
-            <template is="dom-repeat" items="{{month.days}}" as="day">
+            <template id="dayRepeat" is="dom-repeat" items="{{month.days}}" as="day">
 
               <template is="dom-if" if="{{!day}}">
                 <div class="day"></div>
@@ -320,6 +320,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.intl.day = Intl.DateTimeFormat(this.locale, {day: 'numeric' }).format;
       },
       pickDate: function(e){
+
         var data = e.path[1].dataset.date ? e.path[1].dataset : e.path[0].dataset;
         var day = data.date;
         var month = data.month;
